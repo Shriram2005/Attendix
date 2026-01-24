@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_sm"
+    app:cardCornerRadius="@dimen/radius_lg"
+    app:cardElevation="@dimen/elevation_sm"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_md"
+        android:gravity="center_vertical">
+
+        <!-- Icon Container -->
+        <FrameLayout
+            android:id="@+id/iconContainer"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_primary_light">
+
+            <ImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                tools:src="@drawable/ic_calendar"
+                app:tint="?attr/colorPrimary" />
+
+        </FrameLayout>
+
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvLeaveType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Attendix.TitleSmall"
+                android:textColor="?attr/colorOnSurface"
+                tools:text="Annual Leave" />
+
+            <TextView
+                android:id="@+id/tvDateRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxs"
+                android:textAppearance="@style/TextAppearance.Attendix.BodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="Oct 12 - Oct 14, 2023" />
+
+            <TextView
+                android:id="@+id/tvDaysCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxs"
+                android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="3 days" />
+
+        </LinearLayout>
+
+        <!-- Status Badge -->
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/spacing_sm"
+            android:paddingVertical="@dimen/spacing_xxs"
+            android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+            android:textAllCaps="true"
+            tools:text="Approved"
+            tools:background="@drawable/bg_chip_success"
+            tools:textColor="@color/success" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

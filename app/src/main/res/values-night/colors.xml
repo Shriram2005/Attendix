@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Brand Colors - Dark -->
+    <color name="primary">#ADC6FF</color>
+    <color name="primary_variant">#5C85F2</color>
+    <color name="primary_light">#135BEC</color>
+    <color name="primary_container">#004299</color>
+    <color name="on_primary">#002E69</color>
+    <color name="on_primary_container">#D8E2FF</color>
+
+    <!-- Secondary Colors - Dark -->
+    <color name="secondary">#BEC6DC</color>
+    <color name="secondary_container">#3E4759</color>
+    <color name="on_secondary">#283141</color>
+    <color name="on_secondary_container">#DAE2F9</color>
+
+    <!-- Tertiary Colors - Dark -->
+    <color name="tertiary">#DEBCDF</color>
+    <color name="tertiary_container">#57385C</color>
+    <color name="on_tertiary">#3F2844</color>
+    <color name="on_tertiary_container">#FBD7FC</color>
+
+    <!-- Background Colors - Dark -->
+    <color name="background">#1B1B1F</color>
+    <color name="on_background">#E4E2E6</color>
+    <color name="surface">#1B1B1F</color>
+    <color name="on_surface">#E4E2E6</color>
+    <color name="surface_variant">#44474F</color>
+    <color name="on_surface_variant">#C5C6D0</color>
+
+    <!-- Error Colors - Dark -->
+    <color name="error">#FFB4AB</color>
+    <color name="error_container">#93000A</color>
+    <color name="on_error">#690005</color>
+    <color name="on_error_container">#FFDAD6</color>
+
+    <!-- Status Colors - Dark -->
+    <color name="success">#81C784</color>
+    <color name="success_container">#1B5E20</color>
+    <color name="on_success">#1B5E20</color>
+    <color name="on_success_container">#C8E6C9</color>
+
+    <color name="warning">#FFB74D</color>
+    <color name="warning_container">#E65100</color>
+    <color name="on_warning">#3E2723</color>
+    <color name="on_warning_container">#FFE0B2</color>
+
+    <color name="info">#4FC3F7</color>
+    <color name="info_container">#01579B</color>
+    <color name="on_info">#01579B</color>
+    <color name="on_info_container">#B3E5FC</color>
+
+    <!-- Attendance Status Colors - Dark -->
+    <color name="status_present">#81C784</color>
+    <color name="status_absent">#EF5350</color>
+    <color name="status_late">#FFB74D</color>
+    <color name="status_half_day">#BA68C8</color>
+    <color name="status_on_leave">#64B5F6</color>
+    <color name="status_working">#4DB6AC</color>
+
+    <!-- Leave Status Colors - Dark -->
+    <color name="leave_pending">#FFB74D</color>
+    <color name="leave_approved">#81C784</color>
+    <color name="leave_rejected">#EF5350</color>
+    <color name="leave_cancelled">#BDBDBD</color>
+
+    <!-- Outline - Dark -->
+    <color name="outline">#8F909A</color>
+    <color name="outline_variant">#44474F</color>
+
+    <!-- Card & Containers - Dark -->
+    <color name="card_background">#262629</color>
+    <color name="card_elevated">#2F2F33</color>
+
+    <!-- Dividers - Dark -->
+    <color name="divider">#404040</color>
+
+    <!-- Text Colors - Dark -->
+    <color name="text_primary">#E4E2E6</color>
+    <color name="text_secondary">#C5C6D0</color>
+    <color name="text_tertiary">#8F909A</color>
+    <color name="text_disabled">#606060</color>
+    <color name="text_hint">#808080</color>
+
+    <!-- Icon Colors - Dark -->
+    <color name="icon_primary">#E4E2E6</color>
+    <color name="icon_secondary">#C5C6D0</color>
+    <color name="icon_tertiary">#8F909A</color>
+
+    <!-- Shimmer/Skeleton - Dark -->
+    <color name="shimmer_base">#303030</color>
+    <color name="shimmer_highlight">#404040</color>
+
+    <!-- Overlay - Dark -->
+    <color name="overlay_dark">#80000000</color>
+    <color name="overlay_light">#40FFFFFF</color>
+
+    <!-- Ripple - Dark -->
+    <color name="ripple_primary">#40ADC6FF</color>
+    <color name="ripple_dark">#40000000</color>
+    <color name="ripple_light">#40FFFFFF</color>
+
+    <!-- Scrim - Dark -->
+    <color name="scrim">#80000000</color>
+</resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spacing_sm"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="@dimen/spacing_xs">
+
+    <!-- Type Label -->
+    <TextView
+        android:id="@+id/tvLeaveType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Attendix.BodySmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        tools:text="Annual:" />
+
+    <!-- Days Remaining -->
+    <TextView
+        android:id="@+id/tvDaysLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xxs"
+        android:textAppearance="@style/TextAppearance.Attendix.BodySmall"
+        android:textStyle="bold"
+        tools:text="14"
+        tools:textColor="@color/primary" />
+
+</LinearLayout>

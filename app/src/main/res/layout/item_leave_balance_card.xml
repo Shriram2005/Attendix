@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spacing_sm"
+    app:cardCornerRadius="@dimen/radius_lg"
+    app:cardElevation="@dimen/elevation_sm"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_md">
+
+        <!-- Icon Container -->
+        <FrameLayout
+            android:id="@+id/iconContainer"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_rounded_primary_container">
+
+            <ImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                tools:src="@drawable/ic_calendar"
+                app:tint="?attr/colorPrimary" />
+
+        </FrameLayout>
+
+        <!-- Leave Type -->
+        <TextView
+            android:id="@+id/tvLeaveType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:textAppearance="@style/TextAppearance.Attendix.TitleSmall"
+            android:textColor="?attr/colorOnSurface"
+            tools:text="Annual Leave" />
+
+        <!-- Days Left -->
+        <TextView
+            android:id="@+id/tvDaysLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xxs"
+            android:textAppearance="@style/TextAppearance.Attendix.BodySmall"
+            android:textStyle="bold"
+            tools:text="14 Days Left"
+            tools:textColor="@color/primary" />
+
+        <!-- Progress Bar -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            app:trackCornerRadius="4dp"
+            app:trackThickness="6dp"
+            tools:progress="70" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

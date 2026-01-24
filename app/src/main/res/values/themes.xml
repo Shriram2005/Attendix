@@ -1,9 +1,92 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Attendix" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base Theme - Light -->
+    <style name="Theme.Attendix" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Primary -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorPrimaryContainer">@color/primary_container</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary_container</item>
+
+        <!-- Secondary -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryContainer">@color/secondary_container</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="colorOnSecondaryContainer">@color/on_secondary_container</item>
+
+        <!-- Tertiary -->
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorTertiaryContainer">@color/tertiary_container</item>
+        <item name="colorOnTertiary">@color/on_tertiary</item>
+        <item name="colorOnTertiaryContainer">@color/on_tertiary_container</item>
+
+        <!-- Background & Surface -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/on_background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+
+        <!-- Error -->
+        <item name="colorError">@color/error</item>
+        <item name="colorErrorContainer">@color/error_container</item>
+        <item name="colorOnError">@color/on_error</item>
+        <item name="colorOnErrorContainer">@color/on_error_container</item>
+
+        <!-- Outline -->
+        <item name="colorOutline">@color/outline</item>
+        <item name="colorOutlineVariant">@color/outline_variant</item>
+
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+
+        <!-- Window -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!-- Ripple -->
+        <item name="android:colorControlHighlight">@color/ripple_primary</item>
+
+        <!-- Shape -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Attendix.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Attendix.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Attendix.LargeComponent</item>
+
+        <!-- Text appearances -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.Attendix.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.Attendix.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.Attendix.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Attendix.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Attendix.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Attendix.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.Attendix.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.Attendix.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.Attendix.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.Attendix.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.Attendix.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.Attendix.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.Attendix.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.Attendix.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.Attendix.LabelSmall</item>
     </style>
 
-    <style name="Theme.Attendix" parent="Base.Theme.Attendix" />
+    <!-- Splash Screen Theme -->
+    <style name="Theme.Attendix.Splash" parent="Theme.Attendix">
+        <item name="android:windowBackground">@color/primary</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:navigationBarColor">@color/primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+    </style>
+
+    <!-- Starting window theme for Android 12+ splash -->
+    <style name="Theme.Attendix.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/primary</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.Attendix</item>
+    </style>
 </resources>

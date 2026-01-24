@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_nav_graph"
+    app:startDestination="@id/adminDashboardFragment">
+
+    <!-- Admin Dashboard -->
+    <fragment
+        android:id="@+id/adminDashboardFragment"
+        android:name="com.windhands.attendix.ui.admin.AdminDashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_admin_dashboard" />
+
+    <!-- Employee Management -->
+    <fragment
+        android:id="@+id/employeeManagementFragment"
+        android:name="com.windhands.attendix.ui.admin.EmployeeManagementFragment"
+        android:label="Employees"
+        tools:layout="@layout/fragment_employee_management">
+
+        <action
+            android:id="@+id/action_employeeManagement_to_addEmployee"
+            app:destination="@id/addEditEmployeeFragment" />
+
+        <action
+            android:id="@+id/action_employeeManagement_to_editEmployee"
+            app:destination="@id/addEditEmployeeFragment" />
+    </fragment>
+
+    <!-- Add/Edit Employee -->
+    <fragment
+        android:id="@+id/addEditEmployeeFragment"
+        android:name="com.windhands.attendix.ui.admin.AddEditEmployeeFragment"
+        android:label="Employee"
+        tools:layout="@layout/fragment_add_edit_employee">
+
+        <argument
+            android:name="employeeId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <!-- Attendance Management -->
+    <fragment
+        android:id="@+id/attendanceManagementFragment"
+        android:name="com.windhands.attendix.ui.admin.AttendanceManagementFragment"
+        android:label="Attendance"
+        tools:layout="@layout/fragment_attendance_management" />
+
+    <!-- Leave Approvals -->
+    <fragment
+        android:id="@+id/leaveApprovalsFragment"
+        android:name="com.windhands.attendix.ui.admin.LeaveApprovalsFragment"
+        android:label="Leave Approvals"
+        tools:layout="@layout/fragment_leave_approvals" />
+
+    <!-- Profile -->
+    <fragment
+        android:id="@+id/adminProfileFragment"
+        android:name="com.windhands.attendix.ui.common.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_profile_to_changePassword"
+            app:destination="@id/adminChangePasswordFragment" />
+    </fragment>
+
+    <!-- Change Password -->
+    <fragment
+        android:id="@+id/adminChangePasswordFragment"
+        android:name="com.windhands.attendix.ui.common.ChangePasswordFragment"
+        android:label="Change Password"
+        tools:layout="@layout/fragment_change_password" />
+
+</navigation>

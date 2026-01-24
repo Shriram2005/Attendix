@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit" />
+    <item
+        android:id="@+id/action_view_attendance"
+        android:icon="@drawable/ic_calendar_today"
+        android:title="@string/employee_view_attendance" />
+    <item
+        android:id="@+id/action_activate"
+        android:icon="@drawable/ic_check_circle"
+        android:title="@string/employee_activate" />
+    <item
+        android:id="@+id/action_deactivate"
+        android:icon="@drawable/ic_block"
+        android:title="@string/employee_deactivate" />
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/delete" />
+</menu>

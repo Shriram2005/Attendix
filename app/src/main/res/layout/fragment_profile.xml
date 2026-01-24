@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/spacing_xl">
+
+            <!-- Profile Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="@dimen/spacing_lg">
+
+                <!-- Profile Picture -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivProfilePicture"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_person"
+                        android:background="?attr/colorPrimaryContainer"
+                        android:padding="24dp"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Attendix.Circle"
+                        app:strokeColor="?attr/colorSurfaceVariant"
+                        app:strokeWidth="2dp" />
+
+                    <!-- Status Indicator -->
+                    <View
+                        android:id="@+id/viewStatusIndicator"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="@dimen/spacing_xs"
+                        android:background="@drawable/bg_status_indicator" />
+
+                </FrameLayout>
+
+                <!-- Name -->
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_md"
+                    android:textAppearance="@style/TextAppearance.Attendix.HeadlineMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:text="John Doe" />
+
+                <!-- Designation -->
+                <TextView
+                    android:id="@+id/tvDesignation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xxs"
+                    android:textAppearance="@style/TextAppearance.Attendix.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="Senior Software Engineer" />
+
+                <!-- Employee ID -->
+                <TextView
+                    android:id="@+id/tvEmployeeId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xxs"
+                    android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.1"
+                    tools:text="Employee ID: EMP-4402" />
+
+            </LinearLayout>
+
+            <!-- Personal Information Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:text="@string/profile_personal_info"
+                android:textAppearance="@style/TextAppearance.Attendix.LabelMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textAllCaps="true" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_sm"
+                app:cardCornerRadius="@dimen/radius_lg"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:divider="@drawable/divider_horizontal"
+                    android:showDividers="middle">
+
+                    <!-- Email -->
+                    <include
+                        android:id="@+id/itemEmail"
+                        layout="@layout/item_profile_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Phone -->
+                    <include
+                        android:id="@+id/itemPhone"
+                        layout="@layout/item_profile_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Job Details Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_lg"
+                android:text="@string/profile_job_details"
+                android:textAppearance="@style/TextAppearance.Attendix.LabelMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textAllCaps="true" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_sm"
+                app:cardCornerRadius="@dimen/radius_lg"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:divider="@drawable/divider_horizontal"
+                    android:showDividers="middle">
+
+                    <!-- Department -->
+                    <include
+                        android:id="@+id/itemDepartment"
+                        layout="@layout/item_profile_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Role -->
+                    <include
+                        android:id="@+id/itemRole"
+                        layout="@layout/item_profile_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Joining Date -->
+                    <include
+                        android:id="@+id/itemJoiningDate"
+                        layout="@layout/item_profile_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Account Settings Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_lg"
+                android:text="@string/profile_account_settings"
+                android:textAppearance="@style/TextAppearance.Attendix.LabelMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textAllCaps="true" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_sm"
+                app:cardCornerRadius="@dimen/radius_lg"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:divider="@drawable/divider_horizontal"
+                    android:showDividers="middle">
+
+                    <!-- Change Password -->
+                    <LinearLayout
+                        android:id="@+id/layoutChangePassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_md"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_lock"
+                            app:tint="?attr/colorOnSurfaceVariant" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_md"
+                            android:text="@string/profile_change_password"
+                            android:textAppearance="@style/TextAppearance.Attendix.BodyLarge"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="?attr/colorOnSurfaceVariant" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Logout Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogout"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_md"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:text="@string/profile_logout"
+                android:textColor="@color/error"
+                app:icon="@drawable/ic_logout"
+                app:iconTint="@color/error"
+                app:strokeColor="@color/error_container" />
+
+            <!-- App Version -->
+            <TextView
+                android:id="@+id/tvAppVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="Attendix v1.0.0" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Loading Overlay -->
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_50"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

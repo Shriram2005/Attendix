@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/employee_nav_graph"
+    app:startDestination="@id/employeeDashboardFragment">
+
+    <!-- Employee Dashboard -->
+    <fragment
+        android:id="@+id/employeeDashboardFragment"
+        android:name="com.windhands.attendix.ui.employee.EmployeeDashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_employee_dashboard">
+        
+        <action
+            android:id="@+id/action_employeeDashboard_to_leaveManagement"
+            app:destination="@id/leaveManagementFragment" />
+            
+        <action
+            android:id="@+id/action_employeeDashboard_to_profile"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <!-- Attendance History -->
+    <fragment
+        android:id="@+id/attendanceHistoryFragment"
+        android:name="com.windhands.attendix.ui.employee.AttendanceHistoryFragment"
+        android:label="Attendance History"
+        tools:layout="@layout/fragment_attendance_history" />
+
+    <!-- Leave Management -->
+    <fragment
+        android:id="@+id/leaveManagementFragment"
+        android:name="com.windhands.attendix.ui.employee.LeaveManagementFragment"
+        android:label="Leave Management"
+        tools:layout="@layout/fragment_leave_management">
+
+        <action
+            android:id="@+id/action_leaveManagementFragment_to_applyLeaveFragment"
+            app:destination="@id/applyLeaveFragment" />
+    </fragment>
+
+    <!-- Apply Leave -->
+    <fragment
+        android:id="@+id/applyLeaveFragment"
+        android:name="com.windhands.attendix.ui.employee.ApplyLeaveFragment"
+        android:label="Apply Leave"
+        tools:layout="@layout/fragment_apply_leave" />
+
+    <!-- Profile -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.windhands.attendix.ui.common.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_profile_to_changePassword"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
+
+    <!-- Change Password -->
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.windhands.attendix.ui.common.ChangePasswordFragment"
+        android:label="Change Password"
+        tools:layout="@layout/fragment_change_password" />
+
+</navigation>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_md">
+
+    <!-- Icon and Change Indicator Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            tools:src="@drawable/ic_people"
+            tools:tint="@color/primary" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="+2%"
+            tools:textColor="@color/success"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+    <!-- Label -->
+    <TextView
+        android:id="@+id/tvLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:textAppearance="@style/TextAppearance.Attendix.BodySmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        tools:text="Total Employees" />
+
+    <!-- Value -->
+    <TextView
+        android:id="@+id/tvValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxs"
+        android:textAppearance="@style/TextAppearance.Attendix.HeadlineMedium"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="1,240" />
+
+</LinearLayout>

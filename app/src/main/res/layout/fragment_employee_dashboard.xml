@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:fitsSystemWindows="true">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="100dp">
+
+            <!-- Header Section -->
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="@dimen/spacing_lg">
+
+                <!-- Profile Image -->
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_person"
+                    android:scaleType="centerCrop"
+                    android:background="?attr/colorPrimaryContainer"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Attendix.Circle" />
+
+                <!-- Greeting & Department -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/spacing_md"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_greeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.Attendix.TitleMedium"
+                        android:textColor="?attr/colorOnSurface"
+                        tools:text="Good Morning, Alex" />
+
+                    <TextView
+                        android:id="@+id/tv_department"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.Attendix.BodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        tools:text="Product Designer" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Attendance Status Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_attendance"
+                style="@style/Widget.Attendix.Card.Elevated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_lg"
+                android:layout_marginTop="@dimen/spacing_sm"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Gradient Header -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:background="@drawable/bg_gradient_primary">
+
+                        <!-- Current Time -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_lg">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dashboard_current_time"
+                                android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                                android:textColor="@color/white_70" />
+
+                            <TextView
+                                android:id="@+id/tv_current_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.Attendix.DisplaySmall"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                tools:text="08:30 AM" />
+
+                        </LinearLayout>
+
+                        <!-- Date Badge -->
+                        <TextView
+                            android:id="@+id/tv_current_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|end"
+                            android:layout_margin="@dimen/spacing_lg"
+                            android:background="@drawable/bg_badge_translucent"
+                            android:paddingHorizontal="@dimen/spacing_md"
+                            android:paddingVertical="@dimen/spacing_xs"
+                            android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                            android:textColor="@color/white"
+                            tools:text="Monday, Jan 15" />
+
+                    </FrameLayout>
+
+                    <!-- Check-in/Check-out Section -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_lg">
+
+                        <!-- Status -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="@dimen/spacing_lg">
+
+                            <TextView
+                                android:id="@+id/tv_status_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dashboard_today_status"
+                                android:textAppearance="@style/TextAppearance.Attendix.TitleMedium"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:id="@+id/tv_status_subtitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_xxs"
+                                android:textAppearance="@style/TextAppearance.Attendix.BodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                tools:text="You are currently clocked out." />
+
+                        </LinearLayout>
+
+                        <!-- Check-in/Check-out Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_check_in_out"
+                            style="@style/Widget.Attendix.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/button_height_large"
+                            android:text="@string/dashboard_check_in"
+                            app:icon="@drawable/ic_login"
+                            app:iconGravity="textStart" />
+
+                        <!-- Times Row (visible when checked in) -->
+                        <LinearLayout
+                            android:id="@+id/layout_times"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_lg"
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <!-- Check-in Time -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_login"
+                                    app:tint="@color/success"
+                                    android:contentDescription="@string/dashboard_check_in_time" />
+
+                                <TextView
+                                    android:id="@+id/tv_check_in_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_xs"
+                                    android:textAppearance="@style/TextAppearance.Attendix.TitleSmall"
+                                    android:textColor="?attr/colorOnSurface"
+                                    tools:text="08:45 AM" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/dashboard_check_in_label"
+                                    android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                            </LinearLayout>
+
+                            <!-- Divider -->
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="48dp"
+                                android:background="?attr/colorOutlineVariant" />
+
+                            <!-- Check-out Time -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_logout"
+                                    app:tint="@color/error"
+                                    android:contentDescription="@string/dashboard_check_out_time" />
+
+                                <TextView
+                                    android:id="@+id/tv_check_out_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_xs"
+                                    android:textAppearance="@style/TextAppearance.Attendix.TitleSmall"
+                                    android:textColor="?attr/colorOnSurface"
+                                    tools:text="--:--" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/dashboard_check_out_label"
+                                    android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                            </LinearLayout>
+
+                            <!-- Divider -->
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="48dp"
+                                android:background="?attr/colorOutlineVariant" />
+
+                            <!-- Total Hours -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_timer"
+                                    app:tint="?attr/colorPrimary"
+                                    android:contentDescription="@string/dashboard_total_hours" />
+
+                                <TextView
+                                    android:id="@+id/tv_total_hours"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_xs"
+                                    android:textAppearance="@style/TextAppearance.Attendix.TitleSmall"
+                                    android:textColor="?attr/colorOnSurface"
+                                    tools:text="0h 0m" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/dashboard_total_hours"
+                                    android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Leave Balance Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/spacing_lg"
+                android:paddingTop="@dimen/spacing_xl"
+                android:paddingBottom="@dimen/spacing_sm">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/dashboard_leave_balance"
+                    android:textAppearance="@style/TextAppearance.Attendix.TitleMedium"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_view_all_leaves"
+                    style="@style/Widget.Attendix.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_view_all" />
+
+            </LinearLayout>
+
+            <!-- Leave Balance Cards -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_leave_balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/spacing_md"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_leave_balance" />
+
+            <!-- Recent Activity Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_lg"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                android:text="@string/dashboard_recent_activity"
+                android:textAppearance="@style/TextAppearance.Attendix.TitleMedium"
+                android:textColor="?attr/colorOnSurface" />
+
+            <!-- Recent Activity List -->
+            <LinearLayout
+                android:id="@+id/layout_recent_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/spacing_lg"
+                tools:ignore="UselessLeaf" />
+
+            <!-- Empty State -->
+            <LinearLayout
+                android:id="@+id/layout_empty_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="@dimen/spacing_xxl"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_history"
+                    app:tint="?attr/colorOutline"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_md"
+                    android:text="@string/empty_activity"
+                    android:textAppearance="@style/TextAppearance.Attendix.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Loading Overlay -->
+    <FrameLayout
+        android:id="@+id/loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/overlay_light"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            app:indicatorSize="48dp" />
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

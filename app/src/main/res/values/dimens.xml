@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Margins and Paddings -->
+    <dimen name="spacing_xxs">2dp</dimen>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">12dp</dimen>
+    <dimen name="spacing_lg">16dp</dimen>
+    <dimen name="spacing_xl">24dp</dimen>
+    <dimen name="spacing_xxl">32dp</dimen>
+    <dimen name="spacing_xxxl">48dp</dimen>
+
+    <!-- Screen margins -->
+    <dimen name="screen_margin_horizontal">12dp</dimen>
+    <dimen name="screen_margin_vertical">16dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_size_display_large">57sp</dimen>
+    <dimen name="text_size_display_medium">45sp</dimen>
+    <dimen name="text_size_display_small">36sp</dimen>
+    <dimen name="text_size_headline_large">32sp</dimen>
+    <dimen name="text_size_headline_medium">28sp</dimen>
+    <dimen name="text_size_headline_small">24sp</dimen>
+    <dimen name="text_size_title_large">22sp</dimen>
+    <dimen name="text_size_title_medium">16sp</dimen>
+    <dimen name="text_size_title_small">14sp</dimen>
+    <dimen name="text_size_body_large">16sp</dimen>
+    <dimen name="text_size_body_medium">14sp</dimen>
+    <dimen name="text_size_body_small">12sp</dimen>
+    <dimen name="text_size_label_large">14sp</dimen>
+    <dimen name="text_size_label_medium">12sp</dimen>
+    <dimen name="text_size_label_small">11sp</dimen>
+
+    <!-- Corner Radius -->
+    <dimen name="corner_radius_none">0dp</dimen>
+    <dimen name="corner_radius_xs">4dp</dimen>
+    <dimen name="corner_radius_sm">8dp</dimen>
+    <dimen name="corner_radius_md">12dp</dimen>
+    <dimen name="corner_radius_lg">16dp</dimen>
+    <dimen name="corner_radius_xl">24dp</dimen>
+    <dimen name="corner_radius_full">100dp</dimen>
+
+    <!-- Card Radius -->
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_corner_radius_small">12dp</dimen>
+
+    <!-- Button dimensions -->
+    <dimen name="button_height">56dp</dimen>
+    <dimen name="button_height_small">40dp</dimen>
+    <dimen name="button_corner_radius">12dp</dimen>
+    <dimen name="button_min_width">120dp</dimen>
+
+    <!-- Icon sizes -->
+    <dimen name="icon_size_xs">16dp</dimen>
+    <dimen name="icon_size_sm">20dp</dimen>
+    <dimen name="icon_size_md">24dp</dimen>
+    <dimen name="icon_size_lg">32dp</dimen>
+    <dimen name="icon_size_xl">48dp</dimen>
+    <dimen name="icon_size_xxl">64dp</dimen>
+    <dimen name="icon_size_jumbo">96dp</dimen>
+
+    <!-- Avatar sizes -->
+    <dimen name="avatar_size_xs">24dp</dimen>
+    <dimen name="avatar_size_sm">32dp</dimen>
+    <dimen name="avatar_size_md">40dp</dimen>
+    <dimen name="avatar_size_lg">56dp</dimen>
+    <dimen name="avatar_size_xl">72dp</dimen>
+    <dimen name="avatar_size_xxl">96dp</dimen>
+    <dimen name="avatar_size_profile">120dp</dimen>
+
+    <!-- Input fields -->
+    <dimen name="input_height">56dp</dimen>
+    <dimen name="input_corner_radius">12dp</dimen>
+    <dimen name="input_padding_horizontal">16dp</dimen>
+    <dimen name="input_padding_vertical">12dp</dimen>
+
+    <!-- Card dimensions -->
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_elevation_raised">8dp</dimen>
+    <dimen name="card_padding">12dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
+
+    <!-- Bottom Navigation -->
+    <dimen name="bottom_nav_height">80dp</dimen>
+    <dimen name="bottom_nav_icon_size">24dp</dimen>
+
+    <!-- Toolbar -->
+    <dimen name="toolbar_height">56dp</dimen>
+
+    <!-- FAB -->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_size_small">40dp</dimen>
+
+    <!-- Divider -->
+    <dimen name="divider_height">1dp</dimen>
+
+    <!-- Progress indicators -->
+    <dimen name="progress_bar_height">4dp</dimen>
+    <dimen name="circular_progress_size">48dp</dimen>
+    <dimen name="circular_progress_size_small">24dp</dimen>
+
+    <!-- Status indicator -->
+    <dimen name="status_dot_size">8dp</dimen>
+    <dimen name="status_dot_size_large">12dp</dimen>
+
+    <!-- Sheet dimensions -->
+    <dimen name="bottom_sheet_corner_radius">24dp</dimen>
+    <dimen name="bottom_sheet_peek_height">200dp</dimen>
+
+    <!-- Dialog dimensions -->
+    <dimen name="dialog_corner_radius">28dp</dimen>
+    <dimen name="dialog_padding">24dp</dimen>
+
+    <!-- Splash Screen -->
+    <dimen name="splash_logo_size">120dp</dimen>
+    <dimen name="splash_icon_size">80dp</dimen>
+
+    <!-- Attendance card -->
+    <dimen name="attendance_time_card_height">100dp</dimen>
+    <dimen name="attendance_button_size">80dp</dimen>
+
+    <!-- Stats card -->
+    <dimen name="stats_card_min_width">100dp</dimen>
+    <dimen name="stats_card_icon_size">40dp</dimen>
+    <dimen name="stats_card_value_size">28sp</dimen>
+
+    <!-- List item -->
+    <dimen name="list_item_min_height">72dp</dimen>
+    <dimen name="list_item_padding_vertical">12dp</dimen>
+    <dimen name="list_item_padding_horizontal">16dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevation_none">0dp</dimen>
+    <dimen name="elevation_xs">1dp</dimen>
+    <dimen name="elevation_sm">2dp</dimen>
+    <dimen name="elevation_md">4dp</dimen>
+    <dimen name="elevation_lg">8dp</dimen>
+    <dimen name="elevation_xl">16dp</dimen>
+
+    <!-- Radius (for compatibility) -->
+    <dimen name="radius_sm">8dp</dimen>
+    <dimen name="radius_md">12dp</dimen>
+    <dimen name="radius_lg">16dp</dimen>
+    <dimen name="radius_xl">24dp</dimen>
+
+    <!-- Button height variants -->
+    <dimen name="button_height_sm">40dp</dimen>
+    <dimen name="button_height_md">48dp</dimen>
+    <dimen name="button_height_lg">56dp</dimen>
+    <dimen name="button_height_large">56dp</dimen>
+</resources>

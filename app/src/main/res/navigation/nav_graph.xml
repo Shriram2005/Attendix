@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <!-- Splash Screen -->
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.windhands.attendix.ui.splash.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/fragment_splash">
+
+        <action
+            android:id="@+id/action_splash_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_splash_to_employee_dashboard"
+            app:destination="@id/employee_nav_graph"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_splash_to_admin_dashboard"
+            app:destination="@id/admin_nav_graph"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_splash_to_restricted"
+            app:destination="@id/networkRestrictedFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Login Screen -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.windhands.attendix.ui.auth.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_login_to_forgotPassword"
+            app:destination="@id/forgotPasswordFragment" />
+
+        <action
+            android:id="@+id/action_login_to_employee_dashboard"
+            app:destination="@id/employee_nav_graph"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_login_to_admin_dashboard"
+            app:destination="@id/admin_nav_graph"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_login_to_restricted"
+            app:destination="@id/networkRestrictedFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Forgot Password Screen -->
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.windhands.attendix.ui.auth.ForgotPasswordFragment"
+        android:label="Forgot Password"
+        tools:layout="@layout/fragment_forgot_password">
+        
+        <action
+            android:id="@+id/action_forgotPassword_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Network Restricted Screen -->
+    <fragment
+        android:id="@+id/networkRestrictedFragment"
+        android:name="com.windhands.attendix.ui.restricted.NetworkRestrictedFragment"
+        android:label="Access Restricted"
+        tools:layout="@layout/fragment_network_restricted">
+
+        <action
+            android:id="@+id/action_restricted_to_splash"
+            app:destination="@id/splashFragment"
+            app:popUpTo="@id/networkRestrictedFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_restricted_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/networkRestrictedFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Employee Container Fragment -->
+    <fragment
+        android:id="@+id/employee_nav_graph"
+        android:name="com.windhands.attendix.ui.employee.EmployeeContainerFragment"
+        android:label="Employee"
+        tools:layout="@layout/fragment_employee_container">
+        
+        <action
+            android:id="@+id/action_employee_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/employee_nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Admin Container Fragment -->
+    <fragment
+        android:id="@+id/admin_nav_graph"
+        android:name="com.windhands.attendix.ui.admin.AdminContainerFragment"
+        android:label="Admin"
+        tools:layout="@layout/fragment_admin_container">
+        
+        <action
+            android:id="@+id/action_admin_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/admin_nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>

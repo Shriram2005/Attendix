@@ -1,48 +1,107 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
-    namespace = "com.example.attendix"
-    compileSdk {
-        version = release(36)
-    }
+    namespace = "com.windhands.attendix"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.attendix"
+        applicationId = "com.windhands.attendix"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // API Base URL
+        buildConfigField("String", "BASE_URL", "\"https://employee-attendance-system-1y0t.onrender.com/api/\"")
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+        debug {
+            isMinifyEnabled = false
+        }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
+
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "21"
+    }
+
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
 }
 
 dependencies {
+    // Core Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.fragment.ktx)
+    implementation(libs.splashscreen)
+
+    // Hilt - Dependency Injection
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    // Retrofit - Networking
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.moshi)
+
+    // OkHttp - HTTP Client
+    implementation(libs.okhttp.core)
+    implementation(libs.okhttp.logging)
+
+    // Moshi - JSON Parsing
+    implementation(libs.moshi.core)
+    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.codegen)
+
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
+
+    // Lifecycle
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.livedata)
+    implementation(libs.lifecycle.runtime)
+
+    // Navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+
+    // DataStore
+    implementation(libs.datastore.preferences)
+
+    // Coil - Image Loading
+    implementation(libs.coil)
+
+    // SwipeRefreshLayout
+    implementation(libs.swiperefresh)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

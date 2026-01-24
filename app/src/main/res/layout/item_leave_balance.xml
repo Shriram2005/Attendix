@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Attendix.Card.Outlined"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/spacing_xs">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_lg">
+
+        <!-- Icon -->
+        <FrameLayout
+            android:id="@+id/layout_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_rounded_primary_container">
+
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                app:tint="?attr/colorPrimary"
+                tools:src="@drawable/ic_calendar" />
+
+        </FrameLayout>
+
+        <!-- Days -->
+        <TextView
+            android:id="@+id/tv_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:textAppearance="@style/TextAppearance.Attendix.TitleLarge"
+            android:textColor="?attr/colorOnSurface"
+            tools:text="12 Days" />
+
+        <!-- Leave Type -->
+        <TextView
+            android:id="@+id/tv_leave_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Attendix.BodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            tools:text="Annual Leave" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

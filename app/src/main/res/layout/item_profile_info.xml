@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="@dimen/spacing_md">
+
+    <!-- Icon Container -->
+    <FrameLayout
+        android:id="@+id/iconContainer"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_rounded_primary_container">
+
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            tools:src="@drawable/ic_email"
+            app:tint="?attr/colorPrimary" />
+
+    </FrameLayout>
+
+    <!-- Label and Value -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textAllCaps="true"
+            tools:text="Email" />
+
+        <TextView
+            android:id="@+id/tvValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xxs"
+            android:textAppearance="@style/TextAppearance.Attendix.BodyMedium"
+            android:textColor="?attr/colorOnSurface"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="john.doe@enterprise.com" />
+
+    </LinearLayout>
+
+</LinearLayout>

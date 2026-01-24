@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Attendix.Card.Outlined"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_md">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_lg">
+
+        <!-- Header Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Date and Total -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="Today, Oct 24" />
+
+                <TextView
+                    android:id="@+id/tv_total_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xxs"
+                    android:textAppearance="@style/TextAppearance.Attendix.TitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:text="8h 15m Total" />
+
+            </LinearLayout>
+
+            <!-- Status Badge -->
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_chip_success"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="@dimen/spacing_xxs"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                android:textColor="@color/success"
+                tools:text="On Time" />
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="@dimen/spacing_md"
+            android:background="?attr/colorOutlineVariant" />
+
+        <!-- Times Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Clock In -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attendance_check_in"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <TextView
+                    android:id="@+id/tv_check_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xxs"
+                    android:textAppearance="@style/TextAppearance.Attendix.BodyMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:text="09:00 AM" />
+
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/spacing_lg"
+                android:background="?attr/colorOutlineVariant" />
+
+            <!-- Clock Out -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attendance_check_out"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <TextView
+                    android:id="@+id/tv_check_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xxs"
+                    android:textAppearance="@style/TextAppearance.Attendix.BodyMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:text="05:15 PM" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
