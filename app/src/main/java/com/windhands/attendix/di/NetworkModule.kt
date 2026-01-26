@@ -1,7 +1,6 @@
 package com.windhands.attendix.di
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.windhands.attendix.BuildConfig
 import com.windhands.attendix.data.local.SessionManager
 import com.windhands.attendix.data.remote.AdminApiService
@@ -14,11 +13,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
@@ -34,10 +34,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder()
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
+    fun provideJson(): Json {
+        return Json {
+            ignoreUnknownKeys = true
+            coerceInputValues = true
+            isLenient = true
+            encodeDefaults = true
+        }
     }
 
     @Provides
@@ -93,12 +96,13 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        moshi: Moshi
+        json: Json
     ): Retrofit {
+        val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(json.asConverterFactory(contentType))
             .build()
     }
 

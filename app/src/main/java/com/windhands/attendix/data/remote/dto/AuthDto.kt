@@ -1,51 +1,51 @@
 package com.windhands.attendix.data.remote.dto
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class LoginRequest(
-    @Json(name = "employeeId") val employeeId: String,
-    @Json(name = "password") val password: String
+    @SerialName("employeeId") val employeeId: String,
+    @SerialName("password") val password: String
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class LoginResponse(
-    @Json(name = "token") val token: String,
-    @Json(name = "user") val user: UserDto
+    @SerialName("token") val token: String,
+    @SerialName("user") val user: UserDto
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class UserDto(
-    @Json(name = "id") val id: Int,
-    @Json(name = "employee_id") val employeeId: String,
-    @Json(name = "first_name") val firstName: String,
-    @Json(name = "last_name") val lastName: String,
-    @Json(name = "email") val email: String,
-    @Json(name = "phone") val phone: String? = null,
-    @Json(name = "role") val role: String,
-    @Json(name = "department") val department: String? = null,
-    @Json(name = "designation") val designation: String? = null,
-    @Json(name = "status") val status: String = "active",
-    @Json(name = "joining_date") val joiningDate: String? = null
+    @SerialName("id") val id: Int,
+    @SerialName("employee_id") val employeeId: String,
+    @SerialName("first_name") val firstName: String,
+    @SerialName("last_name") val lastName: String,
+    @SerialName("email") val email: String,
+    @SerialName("phone") val phone: String? = null,
+    @SerialName("role") val role: String,
+    @SerialName("department") val department: String? = null,
+    @SerialName("designation") val designation: String? = null,
+    @SerialName("status") val status: String = "active",
+    @SerialName("joining_date") val joiningDate: String? = null
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ProfileResponse(
-    @Json(name = "user") val user: UserDto? = null,
-    @Json(name = "employee") val employee: UserDto? = null,
+    @SerialName("user") val user: UserDto? = null,
+    @SerialName("employee") val employee: UserDto? = null,
     // Direct profile fields (returned by GET /auth/me)
-    @Json(name = "id") val id: Int? = null,
-    @Json(name = "employee_id") val employeeId: String? = null,
-    @Json(name = "first_name") val firstName: String? = null,
-    @Json(name = "last_name") val lastName: String? = null,
-    @Json(name = "email") val email: String? = null,
-    @Json(name = "phone") val phone: String? = null,
-    @Json(name = "role") val role: String? = null,
-    @Json(name = "department") val department: String? = null,
-    @Json(name = "designation") val designation: String? = null,
-    @Json(name = "is_active") val isActive: Boolean? = null,
-    @Json(name = "date_of_joining") val dateOfJoining: String? = null
+    @SerialName("id") val id: Int? = null,
+    @SerialName("employee_id") val employeeId: String? = null,
+    @SerialName("first_name") val firstName: String? = null,
+    @SerialName("last_name") val lastName: String? = null,
+    @SerialName("email") val email: String? = null,
+    @SerialName("phone") val phone: String? = null,
+    @SerialName("role") val role: String? = null,
+    @SerialName("department") val department: String? = null,
+    @SerialName("designation") val designation: String? = null,
+    @SerialName("is_active") val isActive: Boolean? = null,
+    @SerialName("date_of_joining") val dateOfJoining: String? = null
 ) {
     /**
      * Converts the profile response to a unified UserDto,
@@ -76,43 +76,43 @@ data class ProfileResponse(
     }
 }
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AttendanceResponse(
-    @Json(name = "attendance") val attendance: AttendanceDto? = null,
-    @Json(name = "hasCheckedIn") val hasCheckedIn: Boolean = false,
-    @Json(name = "hasCheckedOut") val hasCheckedOut: Boolean = false
+    @SerialName("attendance") val attendance: AttendanceDto? = null,
+    @SerialName("hasCheckedIn") val hasCheckedIn: Boolean = false,
+    @SerialName("hasCheckedOut") val hasCheckedOut: Boolean = false
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AttendanceListResponse(
-    @Json(name = "attendance") val attendance: List<AttendanceDto>? = null,
-    @Json(name = "records") val records: List<AttendanceDto>? = null,
-    @Json(name = "pagination") val pagination: PaginationResponse? = null
+    @SerialName("attendance") val attendance: List<AttendanceDto>? = null,
+    @SerialName("records") val records: List<AttendanceDto>? = null,
+    @SerialName("pagination") val pagination: PaginationResponse? = null
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AttendanceDto(
-    @Json(name = "id") val id: Int,
-    @Json(name = "employee_id") val employeeId: Int,
-    @Json(name = "date") val _date: String? = null,
-    @Json(name = "attendance_date") val _attendanceDate: String? = null,
-    @Json(name = "check_in") val _checkIn: String? = null,
-    @Json(name = "check_in_time") val _checkInTime: String? = null,
-    @Json(name = "check_out") val _checkOut: String? = null,
-    @Json(name = "check_out_time") val _checkOutTime: String? = null,
-    @Json(name = "status") val status: String,
-    @Json(name = "working_hours") val _workingHours: Double? = null,
-    @Json(name = "total_hours") val _totalHours: Double? = null,
-    @Json(name = "overtime_hours") val overtimeHours: Double? = null,
-    @Json(name = "notes") val notes: String? = null,
-    @Json(name = "is_late") val isLate: Boolean? = null,
-    @Json(name = "late_by_minutes") val lateByMinutes: Int? = null,
-    @Json(name = "created_at") val createdAt: String? = null,
+    @SerialName("id") val id: Int,
+    @SerialName("employee_id") val employeeId: Int,
+    @SerialName("date") val _date: String? = null,
+    @SerialName("attendance_date") val _attendanceDate: String? = null,
+    @SerialName("check_in") val _checkIn: String? = null,
+    @SerialName("check_in_time") val _checkInTime: String? = null,
+    @SerialName("check_out") val _checkOut: String? = null,
+    @SerialName("check_out_time") val _checkOutTime: String? = null,
+    @SerialName("status") val status: String,
+    @SerialName("working_hours") val _workingHours: Double? = null,
+    @SerialName("total_hours") val _totalHours: Double? = null,
+    @SerialName("overtime_hours") val overtimeHours: Double? = null,
+    @SerialName("notes") val notes: String? = null,
+    @SerialName("is_late") val isLate: Boolean? = null,
+    @SerialName("late_by_minutes") val lateByMinutes: Int? = null,
+    @SerialName("created_at") val createdAt: String? = null,
     // For admin views
-    @Json(name = "employee_first_name") val employeeFirstName: String? = null,
-    @Json(name = "employee_last_name") val employeeLastName: String? = null,
-    @Json(name = "first_name") val _firstName: String? = null,
-    @Json(name = "last_name") val _lastName: String? = null
+    @SerialName("employee_first_name") val employeeFirstName: String? = null,
+    @SerialName("employee_last_name") val employeeLastName: String? = null,
+    @SerialName("first_name") val _firstName: String? = null,
+    @SerialName("last_name") val _lastName: String? = null
 ) {
     // Computed properties for compatibility
     val date: String get() = _date ?: _attendanceDate ?: ""
@@ -123,24 +123,24 @@ data class AttendanceDto(
     val lastName: String? get() = employeeLastName ?: _lastName
 }
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AttendanceStatsResponse(
-    @Json(name = "totalDays") val _totalDays: Int? = null,
-    @Json(name = "total_days") val _total_days: Int? = null,
-    @Json(name = "presentDays") val _presentDays: Int? = null,
-    @Json(name = "present_days") val _present_days: Int? = null,
-    @Json(name = "absentDays") val _absentDays: Int? = null,
-    @Json(name = "absent_days") val _absent_days: Int? = null,
-    @Json(name = "lateDays") val _lateDays: Int? = null,
-    @Json(name = "late_days") val _late_days: Int? = null,
-    @Json(name = "halfDays") val _halfDays: Int? = null,
-    @Json(name = "half_days") val _half_days: Int? = null,
-    @Json(name = "leaveDays") val _leaveDays: Int? = null,
-    @Json(name = "leave_days") val _leave_days: Int? = null,
-    @Json(name = "totalWorkingHours") val _totalWorkingHours: Double? = null,
-    @Json(name = "averageWorkingHours") val _averageWorkingHours: Double? = null,
-    @Json(name = "avg_hours") val _avg_hours: Double? = null,
-    @Json(name = "overtimeHours") val overtimeHours: Double = 0.0
+    @SerialName("totalDays") val _totalDays: Int? = null,
+    @SerialName("total_days") val _total_days: Int? = null,
+    @SerialName("presentDays") val _presentDays: Int? = null,
+    @SerialName("present_days") val _present_days: Int? = null,
+    @SerialName("absentDays") val _absentDays: Int? = null,
+    @SerialName("absent_days") val _absent_days: Int? = null,
+    @SerialName("lateDays") val _lateDays: Int? = null,
+    @SerialName("late_days") val _late_days: Int? = null,
+    @SerialName("halfDays") val _halfDays: Int? = null,
+    @SerialName("half_days") val _half_days: Int? = null,
+    @SerialName("leaveDays") val _leaveDays: Int? = null,
+    @SerialName("leave_days") val _leave_days: Int? = null,
+    @SerialName("totalWorkingHours") val _totalWorkingHours: Double? = null,
+    @SerialName("averageWorkingHours") val _averageWorkingHours: Double? = null,
+    @SerialName("avg_hours") val _avg_hours: Double? = null,
+    @SerialName("overtimeHours") val overtimeHours: Double = 0.0
 ) {
     val totalDays: Int get() = _totalDays ?: _total_days ?: 0
     val presentDays: Int get() = _presentDays ?: _present_days ?: 0

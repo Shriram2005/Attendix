@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs)
@@ -68,16 +69,14 @@ dependencies {
 
     // Retrofit - Networking
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.moshi)
+    implementation(libs.retrofit.kotlinx.serialization)
 
     // OkHttp - HTTP Client
     implementation(libs.okhttp.core)
     implementation(libs.okhttp.logging)
 
-    // Moshi - JSON Parsing
-    implementation(libs.moshi.core)
-    implementation(libs.moshi.kotlin)
-    ksp(libs.moshi.codegen)
+    // Kotlinx Serialization - JSON Parsing
+    implementation(libs.kotlinx.serialization.json)
 
     // Coroutines
     implementation(libs.coroutines.core)
