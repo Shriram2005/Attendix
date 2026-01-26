@@ -31,37 +31,40 @@ class AdminContainerFragment : BaseFragment<FragmentAdminContainerBinding>() {
             .findFragmentById(R.id.nav_host_fragment_admin) as NavHostFragment
         val navController = navHostFragment.navController
 
-        binding.bottomNav.setupWithNavController(navController)
-
         // Handle reselection to go back to root of that section
         binding.bottomNav.setOnItemReselectedListener { item ->
             navController.popBackStack(item.itemId, inclusive = false)
         }
 
-        // Map menu items to destinations
+        // Map menu items to destinations - handle navigation manually to avoid conflicts
         binding.bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_dashboard -> {
-                    navController.navigate(R.id.adminDashboardFragment)
-                    true
+            val currentDestination = navController.currentDestination?.id
+            val targetDestination = when (item.itemId) {
+                R.id.nav_dashboard -> R.id.adminDashboardFragment
+                R.id.nav_employees -> R.id.employeeManagementFragment
+                R.id.nav_attendance -> R.id.attendanceManagementFragment
+                R.id.nav_leave -> R.id.leaveApprovalsFragment
+                else -> null
+            }
+
+            // Only navigate if we're not already at the destination
+            if (targetDestination != null && currentDestination != targetDestination) {
+                try {
+                    navController.navigate(targetDestination)
+                } catch (e: Exception) {
+                    // Ignore navigation errors if destination is already in stack
                 }
-                R.id.nav_employees -> {
-                    navController.navigate(R.id.employeeManagementFragment)
-                    true
-                }
-                R.id.nav_attendance -> {
-                    navController.navigate(R.id.attendanceManagementFragment)
-                    true
-                }
-                R.id.nav_leave -> {
-                    navController.navigate(R.id.leaveApprovalsFragment)
-                    true
-                }
-                R.id.nav_profile -> {
-                    navController.navigate(R.id.adminProfileFragment)
-                    true
-                }
-                else -> false
+            }
+            true
+        }
+
+        // Update bottom navigation selection on back navigation
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.adminDashboardFragment -> binding.bottomNav.selectedItemId = R.id.nav_dashboard
+                R.id.employeeManagementFragment -> binding.bottomNav.selectedItemId = R.id.nav_employees
+                R.id.attendanceManagementFragment -> binding.bottomNav.selectedItemId = R.id.nav_attendance
+                R.id.leaveApprovalsFragment -> binding.bottomNav.selectedItemId = R.id.nav_leave
             }
         }
     }

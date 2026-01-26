@@ -31,33 +31,38 @@ class EmployeeContainerFragment : BaseFragment<FragmentEmployeeContainerBinding>
             .findFragmentById(R.id.nav_host_fragment_employee) as NavHostFragment
         val navController = navHostFragment.navController
 
-        binding.bottomNav.setupWithNavController(navController)
-
         // Handle reselection to go back to root of that section
         binding.bottomNav.setOnItemReselectedListener { item ->
             navController.popBackStack(item.itemId, inclusive = false)
         }
 
-        // Map menu items to destinations
+        // Map menu items to destinations - handle navigation manually to avoid conflicts
         binding.bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_dashboard -> {
-                    navController.navigate(R.id.employeeDashboardFragment)
-                    true
+            val currentDestination = navController.currentDestination?.id
+            val targetDestination = when (item.itemId) {
+                R.id.nav_dashboard -> R.id.employeeDashboardFragment
+                R.id.nav_attendance -> R.id.attendanceHistoryFragment
+                R.id.nav_leave -> R.id.leaveManagementFragment
+                else -> null
+            }
+
+            // Only navigate if we're not already at the destination
+            if (targetDestination != null && currentDestination != targetDestination) {
+                try {
+                    navController.navigate(targetDestination)
+                } catch (e: Exception) {
+                    // Ignore navigation errors if destination is already in stack
                 }
-                R.id.nav_attendance -> {
-                    navController.navigate(R.id.attendanceHistoryFragment)
-                    true
-                }
-                R.id.nav_leave -> {
-                    navController.navigate(R.id.leaveManagementFragment)
-                    true
-                }
-                R.id.nav_profile -> {
-                    navController.navigate(R.id.profileFragment)
-                    true
-                }
-                else -> false
+            }
+            true
+        }
+
+        // Update bottom navigation selection on back navigation
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.employeeDashboardFragment -> binding.bottomNav.selectedItemId = R.id.nav_dashboard
+                R.id.attendanceHistoryFragment -> binding.bottomNav.selectedItemId = R.id.nav_attendance
+                R.id.leaveManagementFragment -> binding.bottomNav.selectedItemId = R.id.nav_leave
             }
         }
     }

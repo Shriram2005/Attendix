@@ -1,6 +1,8 @@
 package com.windhands.attendix.ui
 
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -20,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private var backPressedTime: Long = 0
+    private var backToast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Handle Android 12+ splash screen
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         setupNavigation()
         setupEdgeToEdge()
+        setupBackNavigation()
     }
 
     private fun setupNavigation() {
@@ -49,7 +54,45 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupBackNavigation() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val currentDestination = navController.currentDestination?.id
+                
+                // If we're at the root containers (employee/admin dashboard), implement double press to exit
+                if (currentDestination == R.id.employee_nav_graph || 
+                    currentDestination == R.id.admin_nav_graph) {
+                    
+                    if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                        // Second press within 2 seconds, exit the app
+                        backToast?.cancel()
+                        finish()
+                    } else {
+                        // First press, show toast
+                        backToast?.cancel()
+                        backToast = Toast.makeText(this@MainActivity, "Press back again to exit", Toast.LENGTH_SHORT)
+                        backToast?.show()
+                    }
+                    backPressedTime = System.currentTimeMillis()
+                    return
+                }
+                
+                // For all other cases, let the navigation component handle it
+                // This allows nested navigation graphs to handle their own back navigation
+                if (!navController.popBackStack()) {
+                    // If there's nothing to pop, we're at the start destination, so exit
+                    finish()
+                }
+            }
+        })
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+    
+    override fun onDestroy() {
+        backToast?.cancel()
+        super.onDestroy()
     }
 }
