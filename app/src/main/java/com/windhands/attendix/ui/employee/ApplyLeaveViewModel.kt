@@ -63,49 +63,72 @@ class ApplyLeaveViewModel @Inject constructor(
                         val data = response.data
                         val balanceItems = mutableListOf<LeaveBalanceItem>()
                         
-                        data?.annual?.let { annual ->
+                        // Use the new toBalanceItems() method which handles both formats
+                        data?.toBalanceItems()?.forEach { dto ->
                             balanceItems.add(
                                 LeaveBalanceItem(
-                                    type = "annual",
-                                    displayName = "Annual",
-                                    used = annual.used,
-                                    total = annual.total,
-                                    remaining = annual.remaining
+                                    type = dto.type,
+                                    displayName = when(dto.type) {
+                                        "paid" -> "Paid Leave"
+                                        "unpaid" -> "Unpaid"
+                                        "annual" -> "Annual"
+                                        "sick" -> "Sick"
+                                        "personal" -> "Personal"
+                                        else -> dto.type.replaceFirstChar { it.uppercase() }
+                                    },
+                                    used = dto.used,
+                                    total = dto.total,
+                                    remaining = dto.remaining
                                 )
                             )
                         }
-                        data?.sick?.let { sick ->
-                            balanceItems.add(
-                                LeaveBalanceItem(
-                                    type = "sick",
-                                    displayName = "Sick",
-                                    used = sick.used,
-                                    total = sick.total,
-                                    remaining = sick.remaining
+                        
+                        // Also check legacy fields if toBalanceItems didn't work
+                        if (balanceItems.isEmpty()) {
+                            data?.annual?.let { annual ->
+                                balanceItems.add(
+                                    LeaveBalanceItem(
+                                        type = "annual",
+                                        displayName = "Annual",
+                                        used = annual.used,
+                                        total = annual.total,
+                                        remaining = annual.remaining
+                                    )
                                 )
-                            )
-                        }
-                        data?.personal?.let { personal ->
-                            balanceItems.add(
-                                LeaveBalanceItem(
-                                    type = "personal",
-                                    displayName = "Personal",
-                                    used = personal.used,
-                                    total = personal.total,
-                                    remaining = personal.remaining
+                            }
+                            data?.sick?.let { sick ->
+                                balanceItems.add(
+                                    LeaveBalanceItem(
+                                        type = "sick",
+                                        displayName = "Sick",
+                                        used = sick.used,
+                                        total = sick.total,
+                                        remaining = sick.remaining
+                                    )
                                 )
-                            )
-                        }
-                        data?.unpaid?.let { unpaid ->
-                            balanceItems.add(
-                                LeaveBalanceItem(
-                                    type = "unpaid",
-                                    displayName = "Unpaid",
-                                    used = unpaid.used,
-                                    total = unpaid.total,
-                                    remaining = unpaid.remaining
+                            }
+                            data?.personal?.let { personal ->
+                                balanceItems.add(
+                                    LeaveBalanceItem(
+                                        type = "personal",
+                                        displayName = "Personal",
+                                        used = personal.used,
+                                        total = personal.total,
+                                        remaining = personal.remaining
+                                    )
                                 )
-                            )
+                            }
+                            data?.unpaid?.let { unpaid ->
+                                balanceItems.add(
+                                    LeaveBalanceItem(
+                                        type = "unpaid",
+                                        displayName = "Unpaid",
+                                        used = unpaid.used,
+                                        total = unpaid.total,
+                                        remaining = unpaid.remaining
+                                    )
+                                )
+                            }
                         }
                         _leaveBalanceState.value = LeaveBalanceState.Success(balanceItems)
                     } else {

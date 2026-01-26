@@ -10,98 +10,106 @@
     app:cardElevation="1dp"
     app:strokeWidth="0dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Employee Avatar -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivAvatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@color/primary_light"
-            android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView" />
-
-        <!-- Avatar Initial -->
-        <TextView
-            android:id="@+id/tvAvatarInitial"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:gravity="center"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textColor="@color/primary"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="JS" />
-
-        <!-- Employee Name -->
-        <TextView
-            android:id="@+id/tvEmployeeName"
-            android:layout_width="0dp"
+        <!-- Header with Avatar, Name and Status -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintEnd_toStartOf="@id/chipStatus"
-            app:layout_constraintStart_toEndOf="@id/ivAvatar"
-            app:layout_constraintTop_toTopOf="@id/ivAvatar"
-            tools:text="John Smith" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <!-- Leave Type and Duration -->
-        <TextView
-            android:id="@+id/tvLeaveInfo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintEnd_toStartOf="@id/chipStatus"
-            app:layout_constraintStart_toEndOf="@id/ivAvatar"
-            app:layout_constraintTop_toBottomOf="@id/tvEmployeeName"
-            tools:text="Annual Leave • 3 Days" />
+            <!-- Avatar Container -->
+            <FrameLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp">
 
-        <!-- Status Chip -->
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipStatus"
-            style="@style/Widget.Material3.Chip.Assist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            app:chipMinHeight="28dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Pending" />
+                <!-- Employee Avatar -->
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@color/primary_light"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView" />
+
+                <!-- Avatar Initial -->
+                <TextView
+                    android:id="@+id/tvAvatarInitial"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:gravity="center"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold"
+                    tools:text="JS" />
+            </FrameLayout>
+
+            <!-- Employee Info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical">
+
+                <!-- Employee Name -->
+                <TextView
+                    android:id="@+id/tvEmployeeName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:text="John Smith" />
+
+                <!-- Leave Type and Duration -->
+                <TextView
+                    android:id="@+id/tvLeaveInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="Annual Leave • 3 Days" />
+            </LinearLayout>
+
+            <!-- Status Chip -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStatus"
+                style="@style/Widget.Material3.Chip.Assist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                app:chipMinHeight="28dp"
+                tools:text="Pending" />
+        </LinearLayout>
 
         <!-- Date Range -->
         <TextView
             android:id="@+id/tvDateRange"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:drawableStart="@drawable/ic_calendar_today"
             android:drawablePadding="8dp"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivAvatar"
-            tools:text="Dec 25, 2024 - Dec 27, 2024"
-            app:drawableTint="?attr/colorOnSurfaceVariant" />
+            app:drawableTint="?attr/colorOnSurfaceVariant"
+            tools:text="Dec 25, 2024 - Dec 27, 2024" />
 
         <!-- Reason -->
         <TextView
             android:id="@+id/tvReason"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:drawableStart="@drawable/ic_description"
@@ -110,11 +118,8 @@
             android:maxLines="2"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDateRange"
-            tools:text="Family vacation during Christmas holidays"
-            app:drawableTint="?attr/colorOnSurfaceVariant" />
+            app:drawableTint="?attr/colorOnSurfaceVariant"
+            tools:text="Family vacation during Christmas holidays" />
 
         <!-- Action Buttons (for pending only) -->
         <LinearLayout
@@ -122,10 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvReason">
+            android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnReject"
@@ -155,17 +157,14 @@
         <!-- Reviewer Info (for approved/rejected) -->
         <TextView
             android:id="@+id/tvReviewerInfo"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:textAppearance="?attr/textAppearanceBodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvReason"
             tools:text="Approved by Admin on Dec 20, 2024" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

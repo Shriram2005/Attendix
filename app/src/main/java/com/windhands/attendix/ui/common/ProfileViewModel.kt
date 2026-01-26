@@ -35,7 +35,7 @@ class ProfileViewModel @Inject constructor(
             
             authRepository.getProfile()
                 .onSuccess { response ->
-                    val user = response.user ?: response.employee
+                    val user = response.toUserDto()
                     if (user != null) {
                         _profileState.value = ProfileState.Success(
                             ProfileData(

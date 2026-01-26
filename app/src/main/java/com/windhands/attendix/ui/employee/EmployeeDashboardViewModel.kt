@@ -123,53 +123,84 @@ class EmployeeDashboardViewModel @Inject constructor(
                 leaveResult.fold(
                     onSuccess = { response ->
                         val balanceList = mutableListOf<LeaveBalanceItem>()
-                        response.data?.annual?.let { balance ->
+                        
+                        // Use the new toBalanceItems() method which handles both formats
+                        response.data?.toBalanceItems()?.forEach { balance ->
                             balanceList.add(
                                 LeaveBalanceItem(
-                                    type = "annual",
-                                    displayName = "Annual",
+                                    type = balance.type,
+                                    displayName = when(balance.type) {
+                                        "paid" -> "Paid Leave"
+                                        "unpaid" -> "Unpaid"
+                                        "annual" -> "Annual"
+                                        "sick" -> "Sick"
+                                        "personal" -> "Casual"
+                                        else -> balance.type.replaceFirstChar { it.uppercase() }
+                                    },
                                     used = balance.used,
                                     remaining = balance.remaining,
                                     total = balance.total,
-                                    iconType = LeaveIconType.ANNUAL
+                                    iconType = when(balance.type) {
+                                        "paid", "annual" -> LeaveIconType.ANNUAL
+                                        "sick" -> LeaveIconType.SICK
+                                        "personal" -> LeaveIconType.CASUAL
+                                        "unpaid" -> LeaveIconType.UNPAID
+                                        else -> LeaveIconType.ANNUAL
+                                    }
                                 )
                             )
                         }
-                        response.data?.sick?.let { balance ->
-                            balanceList.add(
-                                LeaveBalanceItem(
-                                    type = "sick",
-                                    displayName = "Sick",
-                                    used = balance.used,
-                                    remaining = balance.remaining,
-                                    total = balance.total,
-                                    iconType = LeaveIconType.SICK
+                        
+                        // Also check legacy fields if toBalanceItems didn't work
+                        if (balanceList.isEmpty()) {
+                            response.data?.annual?.let { balance ->
+                                balanceList.add(
+                                    LeaveBalanceItem(
+                                        type = "annual",
+                                        displayName = "Annual",
+                                        used = balance.used,
+                                        remaining = balance.remaining,
+                                        total = balance.total,
+                                        iconType = LeaveIconType.ANNUAL
+                                    )
                                 )
-                            )
-                        }
-                        response.data?.personal?.let { balance ->
-                            balanceList.add(
-                                LeaveBalanceItem(
-                                    type = "personal",
-                                    displayName = "Casual",
-                                    used = balance.used,
-                                    remaining = balance.remaining,
-                                    total = balance.total,
-                                    iconType = LeaveIconType.CASUAL
+                            }
+                            response.data?.sick?.let { balance ->
+                                balanceList.add(
+                                    LeaveBalanceItem(
+                                        type = "sick",
+                                        displayName = "Sick",
+                                        used = balance.used,
+                                        remaining = balance.remaining,
+                                        total = balance.total,
+                                        iconType = LeaveIconType.SICK
+                                    )
                                 )
-                            )
-                        }
-                        response.data?.unpaid?.let { balance ->
-                            balanceList.add(
-                                LeaveBalanceItem(
-                                    type = "unpaid",
-                                    displayName = "Unpaid",
-                                    used = balance.used,
-                                    remaining = balance.remaining,
-                                    total = balance.total,
-                                    iconType = LeaveIconType.UNPAID
+                            }
+                            response.data?.personal?.let { balance ->
+                                balanceList.add(
+                                    LeaveBalanceItem(
+                                        type = "personal",
+                                        displayName = "Casual",
+                                        used = balance.used,
+                                        remaining = balance.remaining,
+                                        total = balance.total,
+                                        iconType = LeaveIconType.CASUAL
+                                    )
                                 )
-                            )
+                            }
+                            response.data?.unpaid?.let { balance ->
+                                balanceList.add(
+                                    LeaveBalanceItem(
+                                        type = "unpaid",
+                                        displayName = "Unpaid",
+                                        used = balance.used,
+                                        remaining = balance.remaining,
+                                        total = balance.total,
+                                        iconType = LeaveIconType.UNPAID
+                                    )
+                                )
+                            }
                         }
                         _leaveBalances.value = balanceList
                     },

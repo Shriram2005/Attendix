@@ -71,16 +71,24 @@ class AdminRepository @Inject constructor(
         joiningDate: String?
     ): Result<ApiResponse<EmployeeDto>> {
         return try {
+            // Map role name to roleId
+            val roleId = when (role.lowercase()) {
+                "admin" -> 1
+                "hr" -> 2
+                "employee" -> 3
+                else -> 3 // Default to employee
+            }
+            
             val request = mutableMapOf<String, Any?>(
                 "firstName" to firstName,
                 "lastName" to lastName,
                 "email" to email,
-                "role" to role
+                "roleId" to roleId,
+                "designation" to (designation ?: "Employee"),
+                "department" to (department ?: "General")
             )
             phone?.let { request["phone"] = it }
-            department?.let { request["department"] = it }
-            designation?.let { request["designation"] = it }
-            joiningDate?.let { request["joiningDate"] = it }
+            joiningDate?.let { request["dateOfJoining"] = it }
 
             val response = adminApiService.createEmployee(request)
             Result.success(
@@ -107,13 +115,22 @@ class AdminRepository @Inject constructor(
     ): Result<ApiResponse<EmployeeDto>> {
         return try {
             val request = mutableMapOf<String, Any?>()
-            firstName?.let { request["firstName"] = it }
-            lastName?.let { request["lastName"] = it }
+            firstName?.let { request["first_name"] = it }
+            lastName?.let { request["last_name"] = it }
             phone?.let { request["phone"] = it }
             department?.let { request["department"] = it }
             designation?.let { request["designation"] = it }
-            role?.let { request["role"] = it }
-            joiningDate?.let { request["joiningDate"] = it }
+            role?.let {
+                // Map role name to roleId
+                val roleId = when (it.lowercase()) {
+                    "admin" -> 1
+                    "hr" -> 2
+                    "employee" -> 3
+                    else -> 3
+                }
+                request["role_id"] = roleId
+            }
+            joiningDate?.let { request["date_of_joining"] = it }
 
             val response = adminApiService.updateEmployee(employeeId, request)
             Result.success(

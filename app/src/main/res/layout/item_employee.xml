@@ -10,104 +10,111 @@
     app:cardElevation="1dp"
     app:strokeWidth="0dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Avatar -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivAvatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@color/primary_light"
-            android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView"
-            tools:src="@drawable/ic_person" />
-
-        <!-- Avatar Initial -->
-        <TextView
-            android:id="@+id/tvAvatarInitial"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:gravity="center"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textColor="@color/primary"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="JS" />
-
-        <!-- Status Indicator -->
-        <View
-            android:id="@+id/viewStatusIndicator"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/bg_status_indicator"
-            app:layout_constraintEnd_toEndOf="@id/ivAvatar"
-            app:layout_constraintBottom_toBottomOf="@id/ivAvatar" />
-
-        <!-- Name -->
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="0dp"
+        <!-- Header with Avatar, Name and More Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintEnd_toStartOf="@id/btnMore"
-            app:layout_constraintStart_toEndOf="@id/ivAvatar"
-            app:layout_constraintTop_toTopOf="@id/ivAvatar"
-            tools:text="John Smith" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <!-- Employee ID + Department -->
-        <TextView
-            android:id="@+id/tvEmployeeInfo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintEnd_toStartOf="@id/btnMore"
-            app:layout_constraintStart_toEndOf="@id/ivAvatar"
-            app:layout_constraintTop_toBottomOf="@id/tvName"
-            tools:text="EMP001 • Engineering" />
+            <!-- Avatar Container -->
+            <FrameLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp">
 
-        <!-- More Options Button -->
-        <ImageButton
-            android:id="@+id/btnMore"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/more_options"
-            android:src="@drawable/ic_more_vert"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="?attr/colorOnSurfaceVariant" />
+                <!-- Avatar -->
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@color/primary_light"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView"
+                    tools:src="@drawable/ic_person" />
+
+                <!-- Avatar Initial -->
+                <TextView
+                    android:id="@+id/tvAvatarInitial"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:gravity="center"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold"
+                    tools:text="JS" />
+
+                <!-- Status Indicator -->
+                <View
+                    android:id="@+id/viewStatusIndicator"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/bg_status_indicator" />
+            </FrameLayout>
+
+            <!-- Employee Info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical">
+
+                <!-- Name -->
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:text="John Smith" />
+
+                <!-- Employee ID + Department -->
+                <TextView
+                    android:id="@+id/tvEmployeeInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="EMP001 • Engineering" />
+            </LinearLayout>
+
+            <!-- More Options Button -->
+            <ImageButton
+                android:id="@+id/btnMore"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/more_options"
+                android:src="@drawable/ic_more_vert"
+                app:tint="?attr/colorOnSurfaceVariant" />
+        </LinearLayout>
 
         <!-- Divider -->
         <View
             android:id="@+id/divider"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="12dp"
             android:background="?attr/colorOutlineVariant"
-            android:alpha="0.5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivAvatar" />
+            android:alpha="0.5" />
 
         <!-- Role and Designation -->
         <TextView
             android:id="@+id/tvRole"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:drawableStart="@drawable/ic_work"
@@ -116,16 +123,13 @@
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
-            tools:text="Software Engineer"
-            app:drawableTint="?attr/colorOnSurfaceVariant" />
+            app:drawableTint="?attr/colorOnSurfaceVariant"
+            tools:text="Software Engineer" />
 
         <!-- Email -->
         <TextView
             android:id="@+id/tvEmail"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:drawableStart="@drawable/ic_email"
@@ -134,11 +138,8 @@
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvRole"
-            tools:text="john.smith@company.com"
-            app:drawableTint="?attr/colorOnSurfaceVariant" />
+            app:drawableTint="?attr/colorOnSurfaceVariant"
+            tools:text="john.smith@company.com" />
 
         <!-- Status Badge -->
         <com.google.android.material.chip.Chip
@@ -151,10 +152,8 @@
             android:textColor="@color/success"
             app:chipBackgroundColor="@color/success_light"
             app:chipMinHeight="28dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEmail"
             tools:text="Active" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

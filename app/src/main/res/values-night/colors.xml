@@ -93,7 +93,7 @@
 
     <!-- Overlay - Dark -->
     <color name="overlay_dark">#80000000</color>
-    <color name="overlay_light">#40FFFFFF</color>
+    <color name="overlay_light">#801B1B1F</color>
 
     <!-- Ripple - Dark -->
     <color name="ripple_primary">#40ADC6FF</color>
@@ -102,4 +102,29 @@
 
     <!-- Scrim - Dark -->
     <color name="scrim">#80000000</color>
+
+    <!-- Surface Overlay - Dark -->
+    <color name="surface_overlay">#CC1B1B1F</color>
+
+    <!-- Success Light - Dark -->
+    <color name="success_light">#1B3D1E</color>
+
+    <!-- Error Light - Dark -->
+    <color name="error_light">#3D1B1E</color>
+
+    <!-- Warning Light - Dark -->
+    <color name="warning_light">#3D3415</color>
+
+    <!-- Info Background - Dark -->
+    <color name="info_background">#162A3D</color>
+
+    <!-- Black Alpha - Dark (same as light) -->
+    <color name="black_50">#80000000</color>
+    <color name="black_30">#4D000000</color>
+    <color name="black_10">#1A000000</color>
+
+    <!-- White Alpha - Dark (same as light) -->
+    <color name="white_70">#B3FFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="white_10">#1AFFFFFF</color>
 </resources>
