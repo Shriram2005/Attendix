@@ -7,19 +7,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.windhands.attendix.R
 import com.windhands.attendix.databinding.FragmentAttendanceHistoryBinding
 import com.windhands.attendix.ui.base.BaseFragment
-import com.windhands.attendix.ui.employee.adapter.AttendanceRecordAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>() {
 
     private val viewModel: AttendanceHistoryViewModel by viewModels()
-    private lateinit var attendanceAdapter: AttendanceRecordAdapter
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -29,35 +27,44 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
     }
 
     override fun setupView() {
-        setupRecyclerView()
-        setupFilterChips()
+        setupCalendarView()
         setupCheckInOutButtons()
+        setupCalendarNavigation()
     }
 
-    private fun setupRecyclerView() {
-        attendanceAdapter = AttendanceRecordAdapter()
-        binding.rvAttendance.apply {
-            adapter = attendanceAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+    private fun setupCalendarView() {
+        android.util.Log.d("AttendanceHistory", "Setting up calendar view listener")
+        binding.calendarView.onDateSelectedListener = { date ->
+            android.util.Log.d("AttendanceHistory", "Calendar listener triggered for date: $date")
+            viewModel.onDateSelected(date)
         }
     }
 
-    private fun setupFilterChips() {
-        binding.chipAll.setOnClickListener {
-            viewModel.setFilter(AttendanceFilter.ALL)
+    private fun setupCalendarNavigation() {
+        binding.btnPrevMonth.setOnClickListener {
+            binding.calendarView.previousMonth()
+            viewModel.clearSelectedDate()
+            updateMonthDisplay()
         }
-        binding.chipPresent.setOnClickListener {
-            viewModel.setFilter(AttendanceFilter.PRESENT)
+        
+        binding.btnNextMonth.setOnClickListener {
+            binding.calendarView.nextMonth()
+            viewModel.clearSelectedDate()
+            updateMonthDisplay()
         }
-        binding.chipAbsent.setOnClickListener {
-            viewModel.setFilter(AttendanceFilter.ABSENT)
+        
+        binding.btnToday.setOnClickListener {
+            binding.calendarView.goToToday()
+            updateMonthDisplay()
         }
-        binding.chipLate.setOnClickListener {
-            viewModel.setFilter(AttendanceFilter.LATE)
-        }
-        binding.chipLeave.setOnClickListener {
-            viewModel.setFilter(AttendanceFilter.LEAVE)
-        }
+        
+        updateMonthDisplay()
+    }
+
+    private fun updateMonthDisplay() {
+        val currentMonth = binding.calendarView.getCurrentMonth()
+        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
+        binding.tvCurrentMonth.text = currentMonth.format(formatter)
     }
 
     private fun setupCheckInOutButtons() {
@@ -84,21 +91,23 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
                 }
 
                 launch {
-                    viewModel.currentFilter.collect { filter ->
-                        binding.chipAll.isChecked = filter == AttendanceFilter.ALL
-                        binding.chipPresent.isChecked = filter == AttendanceFilter.PRESENT
-                        binding.chipAbsent.isChecked = filter == AttendanceFilter.ABSENT
-                        binding.chipLate.isChecked = filter == AttendanceFilter.LATE
-                        binding.chipLeave.isChecked = filter == AttendanceFilter.LEAVE
+                    viewModel.attendanceMap.collect { attendanceMap ->
+                        binding.calendarView.setAttendanceData(attendanceMap)
+                        binding.layoutEmpty.isVisible = attendanceMap.isEmpty() && 
+                            viewModel.historyState.value !is AttendanceHistoryState.Loading
                     }
                 }
 
                 launch {
-                    viewModel.attendanceRecords.collect { records ->
-                        attendanceAdapter.submitList(records)
-                        binding.layoutEmpty.isVisible = records.isEmpty() && 
-                            viewModel.historyState.value !is AttendanceHistoryState.Loading
-                        binding.rvAttendance.isVisible = records.isNotEmpty()
+                    viewModel.selectedDateDetails.collect { details ->
+                        android.util.Log.d("AttendanceHistory", "Fragment received details: ${details != null}")
+                        if (details != null) {
+                            android.util.Log.d("AttendanceHistory", "Showing details for: ${details.date}")
+                            showDateDetails(details)
+                        } else {
+                            android.util.Log.d("AttendanceHistory", "Hiding details card")
+                            binding.cardDayDetails.isVisible = false
+                        }
                     }
                 }
 
@@ -148,6 +157,60 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
                     }
                 }
             }
+        }
+    }
+
+    private fun showDateDetails(details: AttendanceRecordItem) {
+        binding.cardDayDetails.isVisible = true
+        
+        // Set date
+        binding.tvSelectedDate.text = details.date
+        
+        // Set status with appropriate styling
+        val (statusText, statusBg, statusColor) = when {
+            details.isNoRecord -> Triple(
+                getString(R.string.attendance_no_record),
+                R.drawable.bg_chip_neutral,
+                R.color.text_secondary
+            )
+            details.isPresent -> Triple(
+                getString(R.string.attendance_filter_present),
+                R.drawable.bg_chip_success,
+                R.color.success
+            )
+            details.isAbsent -> Triple(
+                getString(R.string.attendance_filter_absent),
+                R.drawable.bg_chip_error,
+                R.color.error
+            )
+            details.isLate -> Triple(
+                getString(R.string.attendance_filter_late),
+                R.drawable.bg_chip_warning,
+                R.color.warning
+            )
+            details.isOnLeave -> Triple(
+                getString(R.string.admin_on_leave),
+                R.drawable.bg_chip_info,
+                R.color.info
+            )
+            else -> Triple(
+                details.status,
+                R.drawable.bg_chip_default,
+                R.color.text_secondary
+            )
+        }
+        
+        binding.tvSelectedStatus.text = statusText
+        binding.tvSelectedStatus.setBackgroundResource(statusBg)
+        binding.tvSelectedStatus.setTextColor(requireContext().getColor(statusColor))
+        
+        // Set times and work hours
+        binding.tvSelectedCheckIn.text = details.checkIn
+        binding.tvSelectedCheckOut.text = details.checkOut
+        binding.tvSelectedWorkHours.text = details.formattedHours
+
+        binding.scrollView.post {
+            binding.scrollView.smoothScrollTo(0, binding.cardDayDetails.top)
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.windhands.attendix.data.remote.dto.AttendanceDto
 import com.windhands.attendix.data.repository.AttendanceRepository
 import com.windhands.attendix.ui.base.BaseViewModel
+import com.windhands.attendix.ui.employee.view.AttendanceStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
@@ -27,14 +29,15 @@ class AttendanceHistoryViewModel @Inject constructor(
     private val _historyState = MutableStateFlow<AttendanceHistoryState>(AttendanceHistoryState.Loading)
     val historyState: StateFlow<AttendanceHistoryState> = _historyState.asStateFlow()
 
-    private val _attendanceRecords = MutableStateFlow<List<AttendanceRecordItem>>(emptyList())
-    val attendanceRecords: StateFlow<List<AttendanceRecordItem>> = _attendanceRecords.asStateFlow()
+    // Calendar-specific state
+    private val _attendanceMap = MutableStateFlow<Map<LocalDate, AttendanceStatus>>(emptyMap())
+    val attendanceMap: StateFlow<Map<LocalDate, AttendanceStatus>> = _attendanceMap.asStateFlow()
+
+    private val _selectedDateDetails = MutableStateFlow<AttendanceRecordItem?>(null)
+    val selectedDateDetails: StateFlow<AttendanceRecordItem?> = _selectedDateDetails.asStateFlow()
 
     private val _stats = MutableStateFlow<AttendanceStats?>(null)
     val stats: StateFlow<AttendanceStats?> = _stats.asStateFlow()
-
-    private val _currentFilter = MutableStateFlow(AttendanceFilter.ALL)
-    val currentFilter: StateFlow<AttendanceFilter> = _currentFilter.asStateFlow()
 
     private val _todayAttendance = MutableStateFlow<TodayAttendanceStatus?>(null)
     val todayAttendance: StateFlow<TodayAttendanceStatus?> = _todayAttendance.asStateFlow()
@@ -51,9 +54,10 @@ class AttendanceHistoryViewModel @Inject constructor(
     private val _successEvent = MutableSharedFlow<String>()
     override val successEvent: SharedFlow<String> = _successEvent.asSharedFlow()
 
-    private var allRecords: List<AttendanceRecordItem> = emptyList()
+    // Store all records for quick lookup
+    private var allRecordsMap: Map<LocalDate, AttendanceRecordItem> = emptyMap()
 
-    private val displayDateFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
+    private val displayDateFormatter = DateTimeFormatter.ofPattern("EEEE, MMM d, yyyy")
     private val apiDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
     private val dateFormat = SimpleDateFormat("EEEE, MMM d, yyyy", Locale.getDefault())
@@ -137,20 +141,34 @@ class AttendanceHistoryViewModel @Inject constructor(
         }
     }
 
-    fun setFilter(filter: AttendanceFilter) {
-        _currentFilter.value = filter
-        applyFilter()
+    fun onDateSelected(date: LocalDate) {
+        val details = allRecordsMap[date] ?: buildPlaceholderRecord(date)
+        _selectedDateDetails.value = details
+        
+        // Log for debugging
+        android.util.Log.d("AttendanceHistory", "Date selected: $date")
+        android.util.Log.d("AttendanceHistory", "Details found: ${details != null}")
+        android.util.Log.d("AttendanceHistory", "Total records in map: ${allRecordsMap.size}")
+        if (details != null) {
+            android.util.Log.d("AttendanceHistory", "Details: checkIn=${details.checkIn}, checkOut=${details.checkOut}")
+        }
     }
 
-    private fun applyFilter() {
-        val filter = _currentFilter.value
-        _attendanceRecords.value = when (filter) {
-            AttendanceFilter.ALL -> allRecords
-            AttendanceFilter.PRESENT -> allRecords.filter { it.status.equals("present", true) }
-            AttendanceFilter.ABSENT -> allRecords.filter { it.status.equals("absent", true) }
-            AttendanceFilter.LATE -> allRecords.filter { it.status.equals("late", true) }
-            AttendanceFilter.LEAVE -> allRecords.filter { it.status.equals("on-leave", true) || it.status.equals("leave", true) }
-        }
+    private fun buildPlaceholderRecord(date: LocalDate): AttendanceRecordItem {
+        val formattedDate = date.format(displayDateFormatter)
+        val rawDate = date.format(apiDateFormatter)
+        val dayOfWeek = date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
+
+        return AttendanceRecordItem(
+            id = -1,
+            date = formattedDate,
+            dateRaw = rawDate,
+            checkIn = "--:--",
+            checkOut = "--:--",
+            status = "no_record",
+            workHours = 0.0,
+            dayOfWeek = dayOfWeek
+        )
     }
 
     fun loadAttendanceHistory() {
@@ -162,21 +180,33 @@ class AttendanceHistoryViewModel @Inject constructor(
             result.fold(
                 onSuccess = { response ->
                     val attendanceList = response.data?.attendance ?: response.data?.records ?: emptyList()
-                    val records = attendanceList.map { att ->
-                        AttendanceRecordItem(
-                            id = att.id,
-                            date = formatDate(att.date),
-                            dateRaw = att.date,
-                            checkIn = formatTimeFromApi(att.checkIn),
-                            checkOut = formatTimeFromApi(att.checkOut),
-                            status = att.status,
-                            workHours = att.workingHours ?: 0.0,
-                            dayOfWeek = getDayOfWeek(att.date)
-                        )
+                    
+                    // Build calendar map and records map
+                    val calendarMap = mutableMapOf<LocalDate, AttendanceStatus>()
+                    val recordsMap = mutableMapOf<LocalDate, AttendanceRecordItem>()
+                    
+                    attendanceList.forEach { att ->
+                        val localDate = parseDate(att.date)
+                        if (localDate != null) {
+                            val status = AttendanceStatus.fromString(att.status)
+                            calendarMap[localDate] = status
+                            
+                            val record = AttendanceRecordItem(
+                                id = att.id,
+                                date = formatDate(att.date),
+                                dateRaw = att.date,
+                                checkIn = formatTimeFromApi(att.checkIn),
+                                checkOut = formatTimeFromApi(att.checkOut),
+                                status = att.status,
+                                workHours = att.workingHours ?: 0.0,
+                                dayOfWeek = getDayOfWeek(att.date)
+                            )
+                            recordsMap[localDate] = record
+                        }
                     }
                     
-                    allRecords = records
-                    applyFilter()
+                    allRecordsMap = recordsMap
+                    _attendanceMap.value = calendarMap
                     _historyState.value = AttendanceHistoryState.Success
                 },
                 onFailure = { error ->
@@ -185,6 +215,10 @@ class AttendanceHistoryViewModel @Inject constructor(
                 }
             )
         }
+    }
+
+    fun clearSelectedDate() {
+        _selectedDateDetails.value = null
     }
 
     private fun loadStats() {
@@ -208,29 +242,25 @@ class AttendanceHistoryViewModel @Inject constructor(
         }
     }
 
-    private fun formatDate(dateString: String): String {
+    private fun parseDate(dateString: String): LocalDate? {
         return try {
             // Handle both date formats: "yyyy-MM-dd" and "yyyy-MM-ddThh:mm:ss.sssZ"
-            val date = if (dateString.contains("T")) {
-                // Parse ISO datetime and extract date
+            if (dateString.contains("T")) {
                 LocalDate.parse(dateString.substring(0, 10), apiDateFormatter)
             } else {
                 LocalDate.parse(dateString, apiDateFormatter)
             }
-            date.format(displayDateFormatter)
         } catch (e: Exception) {
-            // Fallback: try to extract just the date part from ISO format
-            try {
-                if (dateString.contains("T")) {
-                    val datePart = dateString.substring(0, 10)
-                    val date = LocalDate.parse(datePart, apiDateFormatter)
-                    date.format(displayDateFormatter)
-                } else {
-                    dateString
-                }
-            } catch (e2: Exception) {
-                dateString
-            }
+            null
+        }
+    }
+
+    private fun formatDate(dateString: String): String {
+        return try {
+            val date = parseDate(dateString)
+            date?.format(displayDateFormatter) ?: dateString
+        } catch (e: Exception) {
+            dateString
         }
     }
 
@@ -252,8 +282,8 @@ class AttendanceHistoryViewModel @Inject constructor(
 
     private fun getDayOfWeek(dateString: String): String {
         return try {
-            val date = LocalDate.parse(dateString, apiDateFormatter)
-            date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
+            val date = parseDate(dateString)
+            date?.dayOfWeek?.name?.lowercase()?.replaceFirstChar { it.uppercase() } ?: ""
         } catch (e: Exception) {
             ""
         }
@@ -264,10 +294,6 @@ sealed class AttendanceHistoryState {
     data object Loading : AttendanceHistoryState()
     data object Success : AttendanceHistoryState()
     data class Error(val message: String) : AttendanceHistoryState()
-}
-
-enum class AttendanceFilter {
-    ALL, PRESENT, ABSENT, LATE, LEAVE
 }
 
 data class AttendanceRecordItem(
@@ -282,6 +308,7 @@ data class AttendanceRecordItem(
 ) {
     val formattedHours: String
         get() {
+            if (isNoRecord) return "--"
             val hours = workHours.toInt()
             val minutes = ((workHours - hours) * 60).toInt()
             return "${hours}h ${minutes}m"
@@ -291,6 +318,7 @@ data class AttendanceRecordItem(
     val isAbsent: Boolean get() = status.equals("absent", true)
     val isLate: Boolean get() = status.equals("late", true)
     val isOnLeave: Boolean get() = status.equals("on-leave", true) || status.equals("leave", true)
+    val isNoRecord: Boolean get() = status.equals("no_record", true) || status.equals("no record", true)
 }
 
 data class AttendanceStats(
