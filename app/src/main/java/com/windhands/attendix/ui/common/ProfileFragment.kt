@@ -2,6 +2,7 @@ package com.windhands.attendix.ui.common
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,10 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    
+    companion object {
+        private const val TAG = "ProfileFragment"
+    }
 
     private val viewModel: ProfileViewModel by viewModels()
 
@@ -94,6 +99,7 @@ class ProfileFragment : Fragment() {
                                 bindProfileData(state.data)
                             }
                             is ProfileState.Error -> {
+                                Log.e(TAG, "ProfileState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                             }
                             is ProfileState.Loading -> {}

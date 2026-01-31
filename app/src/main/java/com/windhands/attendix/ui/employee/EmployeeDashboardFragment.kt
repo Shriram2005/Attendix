@@ -21,6 +21,8 @@ import com.windhands.attendix.util.gone
 import com.windhands.attendix.util.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
 
 /**
  * Employee Dashboard Screen Fragment
@@ -207,8 +209,8 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
                 btnCheckInOut.text = getString(R.string.dashboard_check_in)
                 btnCheckInOut.isEnabled = true
             } else {
-                tvCheckInTime.text = attendance.checkInTime ?: "--:--"
-                tvCheckOutTime.text = attendance.checkOutTime ?: "--:--"
+                tvCheckInTime.text = formatTimeDisplay(attendance.checkInTime) ?: "--:--"
+                tvCheckOutTime.text = formatTimeDisplay(attendance.checkOutTime) ?: "--:--"
                 
                 val hours = attendance.totalHours?.toInt() ?: 0
                 val minutes = ((attendance.totalHours ?: 0.0) - hours) * 60
@@ -237,5 +239,22 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
 
     override fun showLoading(isLoading: Boolean) {
         binding.loadingOverlay.isVisible = isLoading
+    }
+    
+    private fun formatTimeDisplay(timeString: String?): String? {
+        if (timeString.isNullOrBlank()) return null
+        return try {
+            // Handle ISO datetime format like "2024-01-15T09:00:00.000Z"
+            if (timeString.contains("T")) {
+                val formatter = DateTimeFormatter.ISO_DATE_TIME
+                val dateTime = LocalDateTime.parse(timeString.substring(0, 19), formatter)
+                dateTime.format(DateTimeFormatter.ofPattern("h:mm a"))
+            } else {
+                // Already in correct format or simple time format
+                timeString
+            }
+        } catch (e: Exception) {
+            timeString
+        }
     }
 }

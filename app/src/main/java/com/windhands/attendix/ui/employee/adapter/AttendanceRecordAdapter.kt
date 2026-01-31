@@ -64,9 +64,16 @@ class AttendanceRecordAdapter : ListAdapter<AttendanceRecordItem, AttendanceReco
                 }
             }
 
-            // Times
-            binding.tvCheckIn.text = item.checkIn
-            binding.tvCheckOut.text = item.checkOut
+            // Times - hide for on-leave status
+            if (item.isOnLeave) {
+                binding.timesContainer.visibility = android.view.View.GONE
+                binding.dividerTimes.visibility = android.view.View.GONE
+            } else {
+                binding.timesContainer.visibility = android.view.View.VISIBLE
+                binding.dividerTimes.visibility = android.view.View.VISIBLE
+                binding.tvCheckIn.text = item.checkIn
+                binding.tvCheckOut.text = item.checkOut
+            }
         }
     }
 

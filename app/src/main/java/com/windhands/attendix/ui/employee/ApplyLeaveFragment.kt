@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.employee
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,10 @@ class ApplyLeaveFragment : Fragment() {
 
     private var _binding: FragmentApplyLeaveBinding? = null
     private val binding get() = _binding!!
+    
+    companion object {
+        private const val TAG = "ApplyLeaveFragment"
+    }
 
     private val viewModel: ApplyLeaveViewModel by viewModels()
 
@@ -172,6 +177,7 @@ class ApplyLeaveFragment : Fragment() {
                                 leaveBalanceAdapter.submitList(state.balances)
                             }
                             is LeaveBalanceState.Error -> {
+                                Log.e(TAG, "LeaveBalanceState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                             }
                             is LeaveBalanceState.Loading -> {}
@@ -193,6 +199,7 @@ class ApplyLeaveFragment : Fragment() {
                 launch {
                     viewModel.validationError.collectLatest { error ->
                         error?.let {
+                            Log.e(TAG, "Validation Error: $it")
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
                         }
                     }
@@ -210,6 +217,7 @@ class ApplyLeaveFragment : Fragment() {
                                 findNavController().navigateUp()
                             }
                             is ApplyLeaveState.Error -> {
+                                Log.e(TAG, "ApplyLeaveState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                                 viewModel.resetApplyState()
                             }

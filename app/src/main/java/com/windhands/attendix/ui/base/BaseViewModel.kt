@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.windhands.attendix.util.Resource
@@ -45,6 +46,7 @@ abstract class BaseViewModel : ViewModel() {
      * Emit error message
      */
     protected fun emitError(message: String) {
+        Log.e(this::class.java.simpleName, "Error: $message")
         viewModelScope.launch {
             _errorEvent.emit(message)
         }

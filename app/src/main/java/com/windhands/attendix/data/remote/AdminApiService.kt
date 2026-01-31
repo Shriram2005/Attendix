@@ -37,7 +37,7 @@ interface AdminApiService {
     suspend fun updateEmployee(
         @Path("id") employeeId: Int,
         @Body request: UpdateEmployeeRequest
-    ): ApiResponse<EmployeeResponse>
+    ): ApiResponse<EmployeeDto>
 
     @GET("admin/employees/{id}")
     suspend fun getEmployee(@Path("id") employeeId: Int): ApiResponse<EmployeeResponse>

@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,6 +66,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
      * Show error Snackbar
      */
     protected fun showError(message: String) {
+        Log.e(this::class.java.simpleName, "Error: $message")
         showSnackbar(message, Snackbar.LENGTH_LONG)
     }
 

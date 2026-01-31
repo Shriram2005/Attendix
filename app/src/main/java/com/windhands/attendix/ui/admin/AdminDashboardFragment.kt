@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.admin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,10 @@ class AdminDashboardFragment : Fragment() {
 
     private var _binding: FragmentAdminDashboardBinding? = null
     private val binding get() = _binding!!
+    
+    companion object {
+        private const val TAG = "AdminDashboardFragment"
+    }
 
     private val viewModel: AdminDashboardViewModel by viewModels()
 
@@ -139,6 +144,7 @@ class AdminDashboardFragment : Fragment() {
                                 bindStats(state.stats)
                             }
                             is DashboardState.Error -> {
+                                Log.e(TAG, "DashboardStatsState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                             }
                             is DashboardState.Loading -> {}
@@ -167,6 +173,7 @@ class AdminDashboardFragment : Fragment() {
                             }
                             is ApproveRejectState.Error -> {
                                 binding.loadingOverlay.isVisible = false
+                                Log.e(TAG, "ApproveRejectState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                                 viewModel.resetApproveRejectState()
                             }

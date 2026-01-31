@@ -133,13 +133,7 @@ class AdminRepository @Inject constructor(
             )
 
             val response = adminApiService.updateEmployee(employeeId, request)
-            Result.success(
-                ApiResponse(
-                    success = response.success,
-                    message = response.message,
-                    data = response.data?.employee
-                )
-            )
+            Result.success(response)
         } catch (e: Exception) {
             Result.failure(e)
         }

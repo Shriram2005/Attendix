@@ -66,11 +66,15 @@ data class EmployeeDto(
 
 @Serializable
 data class PaginationResponse(
-    @SerialName("page") val page: Int,
+    @SerialName("currentPage") val currentPage: Int,
     @SerialName("limit") val limit: Int,
     @SerialName("totalPages") val totalPages: Int,
-    @SerialName("totalItems") val totalItems: Int
-)
+    @SerialName("totalRecords") val totalRecords: Int
+) {
+    // Computed properties for backward compatibility
+    val page: Int get() = currentPage
+    val totalItems: Int get() = totalRecords
+}
 
 @Serializable
 data class LeaveBalanceResponse(

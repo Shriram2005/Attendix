@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.admin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,10 @@ class LeaveApprovalsFragment : Fragment() {
 
     private var _binding: FragmentLeaveApprovalsBinding? = null
     private val binding get() = _binding!!
+    
+    companion object {
+        private const val TAG = "LeaveApprovalsFragment"
+    }
 
     private val viewModel: LeaveApprovalsViewModel by viewModels()
 
@@ -133,6 +138,7 @@ class LeaveApprovalsFragment : Fragment() {
                         
                         when (state) {
                             is LeaveRequestsState.Error -> {
+                                Log.e(TAG, "LeaveRequestsState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                             }
                             else -> {}
@@ -162,6 +168,7 @@ class LeaveApprovalsFragment : Fragment() {
                             }
                             is LeaveActionState.Error -> {
                                 binding.loadingOverlay.isVisible = false
+                                Log.e(TAG, "LeaveActionState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                                 viewModel.resetActionState()
                             }

@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.common
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,10 @@ class ChangePasswordFragment : Fragment() {
 
     private var _binding: FragmentChangePasswordBinding? = null
     private val binding get() = _binding!!
+    
+    companion object {
+        private const val TAG = "ChangePasswordFragment"
+    }
 
     private val viewModel: ChangePasswordViewModel by viewModels()
 
@@ -95,6 +100,7 @@ class ChangePasswordFragment : Fragment() {
                                 findNavController().navigateUp()
                             }
                             is ChangePasswordState.Error -> {
+                                Log.e(TAG, "ChangePasswordState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                                 viewModel.resetState()
                             }

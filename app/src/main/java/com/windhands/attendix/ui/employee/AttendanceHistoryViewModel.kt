@@ -53,7 +53,7 @@ class AttendanceHistoryViewModel @Inject constructor(
 
     private var allRecords: List<AttendanceRecordItem> = emptyList()
 
-    private val displayDateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
+    private val displayDateFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
     private val apiDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
     private val dateFormat = SimpleDateFormat("EEEE, MMM d, yyyy", Locale.getDefault())
@@ -210,10 +210,27 @@ class AttendanceHistoryViewModel @Inject constructor(
 
     private fun formatDate(dateString: String): String {
         return try {
-            val date = LocalDate.parse(dateString, apiDateFormatter)
+            // Handle both date formats: "yyyy-MM-dd" and "yyyy-MM-ddThh:mm:ss.sssZ"
+            val date = if (dateString.contains("T")) {
+                // Parse ISO datetime and extract date
+                LocalDate.parse(dateString.substring(0, 10), apiDateFormatter)
+            } else {
+                LocalDate.parse(dateString, apiDateFormatter)
+            }
             date.format(displayDateFormatter)
         } catch (e: Exception) {
-            dateString
+            // Fallback: try to extract just the date part from ISO format
+            try {
+                if (dateString.contains("T")) {
+                    val datePart = dateString.substring(0, 10)
+                    val date = LocalDate.parse(datePart, apiDateFormatter)
+                    date.format(displayDateFormatter)
+                } else {
+                    dateString
+                }
+            } catch (e2: Exception) {
+                dateString
+            }
         }
     }
 
@@ -224,7 +241,7 @@ class AttendanceHistoryViewModel @Inject constructor(
             if (timeString.contains("T")) {
                 val formatter = DateTimeFormatter.ISO_DATE_TIME
                 val dateTime = java.time.LocalDateTime.parse(timeString.substring(0, 19), formatter)
-                dateTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
+                dateTime.format(DateTimeFormatter.ofPattern("h:mm a"))
             } else {
                 timeString
             }

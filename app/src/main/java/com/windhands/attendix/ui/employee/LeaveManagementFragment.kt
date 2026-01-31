@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.employee
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,10 @@ class LeaveManagementFragment : Fragment() {
 
     private var _binding: FragmentLeaveManagementBinding? = null
     private val binding get() = _binding!!
+    
+    companion object {
+        private const val TAG = "LeaveManagementFragment"
+    }
 
     private val viewModel: LeaveManagementViewModel by viewModels()
 
@@ -106,6 +111,7 @@ class LeaveManagementFragment : Fragment() {
                                 leaveBalanceAdapter.submitList(state.balances)
                             }
                             is LeaveBalanceState.Error -> {
+                                Log.e(TAG, "LeaveBalanceState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                             }
                         }
@@ -118,6 +124,7 @@ class LeaveManagementFragment : Fragment() {
                         
                         when (state) {
                             is LeaveRequestsState.Error -> {
+                                Log.e(TAG, "LeaveRequestsState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                             }
                             else -> {}
@@ -146,6 +153,7 @@ class LeaveManagementFragment : Fragment() {
                             }
                             is CancelState.Error -> {
                                 binding.loadingOverlay.isVisible = false
+                                Log.e(TAG, "CancelState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                                 viewModel.resetCancelState()
                             }

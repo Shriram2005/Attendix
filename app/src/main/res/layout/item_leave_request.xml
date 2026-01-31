@@ -69,18 +69,45 @@
 
         </LinearLayout>
 
-        <!-- Status Badge -->
-        <TextView
-            android:id="@+id/tvStatus"
+        <!-- Status and Actions Container -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/spacing_sm"
-            android:paddingVertical="@dimen/spacing_xxs"
-            android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
-            android:textAllCaps="true"
-            tools:text="Approved"
-            tools:background="@drawable/bg_chip_success"
-            tools:textColor="@color/success" />
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <!-- Status Badge -->
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="@dimen/spacing_xxs"
+                android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                android:textAllCaps="true"
+                tools:text="Approved"
+                tools:background="@drawable/bg_chip_success"
+                tools:textColor="@color/success" />
+
+            <!-- Cancel Button (shown only for pending requests) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="4dp"
+                android:text="@string/leave_cancel"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                style="@style/Widget.Material3.Button.TextButton"
+                app:cornerRadius="@dimen/radius_sm"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

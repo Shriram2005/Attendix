@@ -84,14 +84,15 @@ class LeaveRequestAdapter(
 
             binding.root.setOnClickListener { onItemClick(item) }
             
-            // Long press to cancel if pending
+            // Show cancel button for pending requests
             if (item.canCancel) {
-                binding.root.setOnLongClickListener {
+                binding.btnCancelRequest.visibility = android.view.View.VISIBLE
+                binding.btnCancelRequest.setOnClickListener {
                     onCancelClick(item)
-                    true
                 }
             } else {
-                binding.root.setOnLongClickListener(null)
+                binding.btnCancelRequest.visibility = android.view.View.GONE
+                binding.btnCancelRequest.setOnClickListener(null)
             }
         }
     }

@@ -64,6 +64,7 @@
 
         <!-- Divider -->
         <View
+            android:id="@+id/divider_times"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginVertical="@dimen/spacing_md"
@@ -71,6 +72,7 @@
 
         <!-- Times Row -->
         <LinearLayout
+            android:id="@+id/times_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

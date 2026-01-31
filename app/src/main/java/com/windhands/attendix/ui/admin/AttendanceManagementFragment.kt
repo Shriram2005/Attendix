@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.admin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,10 @@ class AttendanceManagementFragment : Fragment() {
 
     private var _binding: FragmentAttendanceManagementBinding? = null
     private val binding get() = _binding!!
+    
+    companion object {
+        private const val TAG = "AttendanceManagementFragment"
+    }
 
     private val viewModel: AttendanceManagementViewModel by viewModels()
 
@@ -133,6 +138,7 @@ class AttendanceManagementFragment : Fragment() {
                         
                         when (state) {
                             is AttendanceListState.Error -> {
+                                Log.e(TAG, "AttendanceListState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                             }
                             else -> {}

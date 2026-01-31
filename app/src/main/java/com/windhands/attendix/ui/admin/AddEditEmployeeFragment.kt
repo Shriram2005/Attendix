@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.admin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,10 @@ class AddEditEmployeeFragment : Fragment() {
 
     private var _binding: FragmentAddEditEmployeeBinding? = null
     private val binding get() = _binding!!
+    
+    companion object {
+        private const val TAG = "AddEditEmployeeFragment"
+    }
 
     private val viewModel: AddEditEmployeeViewModel by viewModels()
 
@@ -167,6 +172,7 @@ class AddEditEmployeeFragment : Fragment() {
                         
                         when (state) {
                             is LoadState.Error -> {
+                                Log.e(TAG, "LoadState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                             }
                             else -> {}
@@ -224,6 +230,7 @@ class AddEditEmployeeFragment : Fragment() {
                                 }
                             }
                             is SubmitState.Error -> {
+                                Log.e(TAG, "SubmitState Error: ${state.message}")
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                                 viewModel.resetSubmitState()
                             }
