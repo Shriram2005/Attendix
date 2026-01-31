@@ -2,9 +2,11 @@ package com.windhands.attendix.data.repository
 
 import com.windhands.attendix.data.remote.LeaveApiService
 import com.windhands.attendix.data.remote.dto.ApiResponse
+import com.windhands.attendix.data.remote.dto.ApplyLeaveRequest
 import com.windhands.attendix.data.remote.dto.LeaveBalanceResponse
 import com.windhands.attendix.data.remote.dto.LeaveRequestDto
 import com.windhands.attendix.data.remote.dto.LeaveRequestListResponse
+import com.windhands.attendix.data.remote.dto.LeaveReviewRequest
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -48,12 +50,12 @@ class LeaveRepository @Inject constructor(
         reason: String?
     ): Result<ApiResponse<LeaveRequestDto>> {
         return try {
-            val request = mutableMapOf<String, Any?>(
-                "leaveType" to leaveType,
-                "startDate" to startDate,
-                "endDate" to endDate
+            val request = ApplyLeaveRequest(
+                leaveType = leaveType,
+                startDate = startDate,
+                endDate = endDate,
+                reason = reason
             )
-            reason?.let { request["reason"] = it }
 
             val response = leaveApiService.applyLeave(request)
             Result.success(response)
@@ -92,10 +94,10 @@ class LeaveRepository @Inject constructor(
 
     suspend fun approveLeaveRequest(requestId: Int, remarks: String?): Result<ApiResponse<Unit>> {
         return try {
-            val request = mutableMapOf<String, Any?>("status" to "approved")
-            if (remarks != null) {
-                request["remarks"] = remarks
-            }
+            val request = LeaveReviewRequest(
+                status = "approved",
+                remarks = remarks
+            )
             val response = leaveApiService.approveLeaveRequest(requestId, request)
             Result.success(response)
         } catch (e: Exception) {
@@ -105,9 +107,9 @@ class LeaveRepository @Inject constructor(
 
     suspend fun rejectLeaveRequest(requestId: Int, remarks: String?): Result<ApiResponse<Unit>> {
         return try {
-            val request = mapOf(
-                "status" to "rejected",
-                "remarks" to (remarks ?: "Request rejected")
+            val request = LeaveReviewRequest(
+                status = "rejected",
+                remarks = remarks ?: "Request rejected"
             )
             val response = leaveApiService.rejectLeaveRequest(requestId, request)
             Result.success(response)

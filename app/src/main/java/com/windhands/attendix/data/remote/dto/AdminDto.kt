@@ -174,3 +174,49 @@ data class LeaveRequestDto(
     val reviewerId: Int? get() = _reviewerId ?: _reviewedBy
     val reviewerRemarks: String? get() = _reviewerRemarks ?: _reviewRemarks
 }
+
+// Request DTOs for API calls
+
+@Serializable
+data class ApplyLeaveRequest(
+    @SerialName("leaveType") val leaveType: String,
+    @SerialName("startDate") val startDate: String,
+    @SerialName("endDate") val endDate: String,
+    @SerialName("reason") val reason: String? = null
+)
+
+@Serializable
+data class LeaveReviewRequest(
+    @SerialName("status") val status: String,
+    @SerialName("remarks") val remarks: String? = null
+)
+
+@Serializable
+data class CreateEmployeeRequest(
+    @SerialName("email") val email: String,
+    @SerialName("firstName") val firstName: String,
+    @SerialName("lastName") val lastName: String,
+    @SerialName("phone") val phone: String? = null,
+    @SerialName("designation") val designation: String,
+    @SerialName("department") val department: String,
+    @SerialName("roleId") val roleId: Int,
+    @SerialName("dateOfJoining") val dateOfJoining: String? = null
+)
+
+@Serializable
+data class UpdateEmployeeRequest(
+    @SerialName("first_name") val firstName: String? = null,
+    @SerialName("last_name") val lastName: String? = null,
+    @SerialName("phone") val phone: String? = null,
+    @SerialName("department") val department: String? = null,
+    @SerialName("designation") val designation: String? = null,
+    @SerialName("role_id") val roleId: Int? = null,
+    @SerialName("date_of_joining") val dateOfJoining: String? = null,
+    @SerialName("password") val password: String? = null
+)
+
+@Serializable
+data class CreateEmployeeResponse(
+    @SerialName("employee") val employee: EmployeeDto,
+    @SerialName("temporaryPassword") val temporaryPassword: String? = null
+)

@@ -319,4 +319,12 @@
     <string name="empty_attendance_subtitle">No attendance records found for the selected date and filter.</string>
     <string name="attendance_select_date">Select Date</string>
     <string name="attendance_today">Today</string>
+
+    <!-- Employee Creation Password Dialog -->
+    <string name="employee_created_title">Employee Created Successfully</string>
+    <string name="employee_created_message">The employee has been created successfully. Please share the temporary password with the employee securely.</string>
+    <string name="temporary_password_label">Temporary Password</string>
+    <string name="toggle_password_visibility">Toggle password visibility</string>
+    <string name="copy_password">Copy password</string>
+    <string name="password_warning_message">Make sure to save or share this password now. It cannot be retrieved later.</string>
 </resources>

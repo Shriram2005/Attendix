@@ -3,8 +3,11 @@ package com.windhands.attendix.data.repository
 import com.windhands.attendix.data.remote.AdminApiService
 import com.windhands.attendix.data.remote.dto.AdminDashboardStatsResponse
 import com.windhands.attendix.data.remote.dto.ApiResponse
+import com.windhands.attendix.data.remote.dto.CreateEmployeeRequest
+import com.windhands.attendix.data.remote.dto.CreateEmployeeResponse
 import com.windhands.attendix.data.remote.dto.EmployeeDto
 import com.windhands.attendix.data.remote.dto.EmployeeListResponse
+import com.windhands.attendix.data.remote.dto.UpdateEmployeeRequest
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -69,7 +72,7 @@ class AdminRepository @Inject constructor(
         designation: String?,
         role: String,
         joiningDate: String?
-    ): Result<ApiResponse<EmployeeDto>> {
+    ): Result<ApiResponse<CreateEmployeeResponse>> {
         return try {
             // Map role name to roleId
             val roleId = when (role.lowercase()) {
@@ -79,25 +82,19 @@ class AdminRepository @Inject constructor(
                 else -> 3 // Default to employee
             }
             
-            val request = mutableMapOf<String, Any?>(
-                "firstName" to firstName,
-                "lastName" to lastName,
-                "email" to email,
-                "roleId" to roleId,
-                "designation" to (designation ?: "Employee"),
-                "department" to (department ?: "General")
+            val request = CreateEmployeeRequest(
+                email = email,
+                firstName = firstName,
+                lastName = lastName,
+                phone = phone,
+                designation = designation ?: "Employee",
+                department = department ?: "General",
+                roleId = roleId,
+                dateOfJoining = joiningDate
             )
-            phone?.let { request["phone"] = it }
-            joiningDate?.let { request["dateOfJoining"] = it }
 
             val response = adminApiService.createEmployee(request)
-            Result.success(
-                ApiResponse(
-                    success = response.success,
-                    message = response.message,
-                    data = response.data?.employee
-                )
-            )
+            Result.success(response)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -111,26 +108,29 @@ class AdminRepository @Inject constructor(
         department: String?,
         designation: String?,
         role: String?,
-        joiningDate: String?
+        joiningDate: String?,
+        password: String? = null
     ): Result<ApiResponse<EmployeeDto>> {
         return try {
-            val request = mutableMapOf<String, Any?>()
-            firstName?.let { request["first_name"] = it }
-            lastName?.let { request["last_name"] = it }
-            phone?.let { request["phone"] = it }
-            department?.let { request["department"] = it }
-            designation?.let { request["designation"] = it }
-            role?.let {
-                // Map role name to roleId
-                val roleId = when (it.lowercase()) {
+            val roleId = role?.let {
+                when (it.lowercase()) {
                     "admin" -> 1
                     "hr" -> 2
                     "employee" -> 3
                     else -> 3
                 }
-                request["role_id"] = roleId
             }
-            joiningDate?.let { request["date_of_joining"] = it }
+            
+            val request = UpdateEmployeeRequest(
+                firstName = firstName,
+                lastName = lastName,
+                phone = phone,
+                department = department,
+                designation = designation,
+                roleId = roleId,
+                dateOfJoining = joiningDate,
+                password = password
+            )
 
             val response = adminApiService.updateEmployee(employeeId, request)
             Result.success(

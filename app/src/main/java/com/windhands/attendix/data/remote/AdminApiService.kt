@@ -2,9 +2,12 @@ package com.windhands.attendix.data.remote
 
 import com.windhands.attendix.data.remote.dto.AdminDashboardStatsResponse
 import com.windhands.attendix.data.remote.dto.ApiResponse
+import com.windhands.attendix.data.remote.dto.CreateEmployeeRequest
+import com.windhands.attendix.data.remote.dto.CreateEmployeeResponse
 import com.windhands.attendix.data.remote.dto.EmployeeDto
 import com.windhands.attendix.data.remote.dto.EmployeeListResponse
 import com.windhands.attendix.data.remote.dto.EmployeeResponse
+import com.windhands.attendix.data.remote.dto.UpdateEmployeeRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -28,12 +31,12 @@ interface AdminApiService {
     ): ApiResponse<List<EmployeeDto>>
 
     @POST("admin/employees")
-    suspend fun createEmployee(@Body request: Map<String, @JvmSuppressWildcards Any?>): ApiResponse<EmployeeResponse>
+    suspend fun createEmployee(@Body request: CreateEmployeeRequest): ApiResponse<CreateEmployeeResponse>
 
     @PUT("admin/employees/{id}")
     suspend fun updateEmployee(
         @Path("id") employeeId: Int,
-        @Body request: Map<String, @JvmSuppressWildcards Any?>
+        @Body request: UpdateEmployeeRequest
     ): ApiResponse<EmployeeResponse>
 
     @GET("admin/employees/{id}")

@@ -3,6 +3,8 @@ package com.windhands.attendix.ui.employee
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -10,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.card.MaterialCardView
 import com.windhands.attendix.R
 import com.windhands.attendix.databinding.FragmentEmployeeDashboardBinding
 import com.windhands.attendix.ui.base.BaseFragment
@@ -130,6 +133,13 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
                     }
                 }
 
+                // Recent activities
+                launch {
+                    viewModel.recentActivities.collect { activities ->
+                        updateRecentActivities(activities)
+                    }
+                }
+
                 // Check-in/out loading
                 launch {
                     viewModel.isCheckingInOut.collect { isLoading ->
@@ -154,8 +164,40 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
         }
     }
 
+    private fun updateRecentActivities(activities: List<ActivityItem>) {
+        binding.layoutRecentActivity.removeAllViews()
+        
+        if (activities.isEmpty()) {
+            // Show empty state
+            binding.layoutEmptyActivity.isVisible = true
+            binding.layoutRecentActivity.isVisible = false
+        } else {
+            binding.layoutEmptyActivity.isVisible = false
+            binding.layoutRecentActivity.isVisible = true
+            
+            activities.forEach { activity ->
+                val activityView = createActivityItemView(activity)
+                binding.layoutRecentActivity.addView(activityView)
+            }
+        }
+    }
+
+    private fun createActivityItemView(activity: ActivityItem): View {
+        val inflater = LayoutInflater.from(requireContext())
+        val view = inflater.inflate(R.layout.item_recent_activity, binding.layoutRecentActivity, false)
+        
+        view.findViewById<TextView>(R.id.tv_activity_title)?.text = activity.title
+        view.findViewById<TextView>(R.id.tv_activity_subtitle)?.text = activity.subtitle
+        view.findViewById<TextView>(R.id.tv_activity_badge)?.text = activity.badge
+        
+        return view
+    }
+
     private fun updateAttendanceUI(attendance: TodayAttendance?) {
         with(binding) {
+            // Show/hide times layout based on check-in status
+            layoutTimes.isVisible = attendance?.isCheckedIn == true
+            
             if (attendance == null) {
                 // Not checked in yet
                 tvCheckInTime.text = "--:--"

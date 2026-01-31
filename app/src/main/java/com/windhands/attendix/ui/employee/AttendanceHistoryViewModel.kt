@@ -5,12 +5,18 @@ import com.windhands.attendix.data.remote.dto.AttendanceDto
 import com.windhands.attendix.data.repository.AttendanceRepository
 import com.windhands.attendix.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,14 +36,105 @@ class AttendanceHistoryViewModel @Inject constructor(
     private val _currentFilter = MutableStateFlow(AttendanceFilter.ALL)
     val currentFilter: StateFlow<AttendanceFilter> = _currentFilter.asStateFlow()
 
+    private val _todayAttendance = MutableStateFlow<TodayAttendanceStatus?>(null)
+    val todayAttendance: StateFlow<TodayAttendanceStatus?> = _todayAttendance.asStateFlow()
+
+    private val _currentTime = MutableStateFlow("")
+    val currentTime: StateFlow<String> = _currentTime.asStateFlow()
+
+    private val _currentDate = MutableStateFlow("")
+    val currentDate: StateFlow<String> = _currentDate.asStateFlow()
+
+    private val _isCheckingInOut = MutableStateFlow(false)
+    val isCheckingInOut: StateFlow<Boolean> = _isCheckingInOut.asStateFlow()
+
+    private val _successEvent = MutableSharedFlow<String>()
+    override val successEvent: SharedFlow<String> = _successEvent.asSharedFlow()
+
     private var allRecords: List<AttendanceRecordItem> = emptyList()
 
     private val displayDateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
     private val apiDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    private val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("EEEE, MMM d, yyyy", Locale.getDefault())
 
     init {
+        updateTime()
+        loadTodayStatus()
         loadAttendanceHistory()
         loadStats()
+    }
+
+    private fun updateTime() {
+        val now = Date()
+        _currentTime.value = timeFormat.format(now)
+        _currentDate.value = dateFormat.format(now)
+    }
+
+    private fun loadTodayStatus() {
+        viewModelScope.launch {
+            attendanceRepository.getTodayStatus()
+                .onSuccess { response ->
+                    response.data?.let { att ->
+                        _todayAttendance.value = TodayAttendanceStatus(
+                            isCheckedIn = att.checkIn != null,
+                            isCheckedOut = att.checkOut != null,
+                            checkInTime = att.checkIn,
+                            checkOutTime = att.checkOut,
+                            status = att.status
+                        )
+                    } ?: run {
+                        _todayAttendance.value = TodayAttendanceStatus(
+                            isCheckedIn = false,
+                            isCheckedOut = false,
+                            checkInTime = null,
+                            checkOutTime = null,
+                            status = "not_checked_in"
+                        )
+                    }
+                }
+                .onFailure {
+                    _todayAttendance.value = TodayAttendanceStatus(
+                        isCheckedIn = false,
+                        isCheckedOut = false,
+                        checkInTime = null,
+                        checkOutTime = null,
+                        status = "not_checked_in"
+                    )
+                }
+        }
+    }
+
+    fun checkIn() {
+        viewModelScope.launch {
+            _isCheckingInOut.value = true
+            attendanceRepository.checkIn()
+                .onSuccess { response ->
+                    _successEvent.emit("Checked in successfully")
+                    loadTodayStatus()
+                    loadAttendanceHistory()
+                }
+                .onFailure { error ->
+                    emitError(error.message ?: "Failed to check in")
+                }
+            _isCheckingInOut.value = false
+        }
+    }
+
+    fun checkOut() {
+        viewModelScope.launch {
+            _isCheckingInOut.value = true
+            attendanceRepository.checkOut()
+                .onSuccess { response ->
+                    _successEvent.emit("Checked out successfully")
+                    loadTodayStatus()
+                    loadAttendanceHistory()
+                }
+                .onFailure { error ->
+                    emitError(error.message ?: "Failed to check out")
+                }
+            _isCheckingInOut.value = false
+        }
     }
 
     fun setFilter(filter: AttendanceFilter) {
@@ -70,8 +167,8 @@ class AttendanceHistoryViewModel @Inject constructor(
                             id = att.id,
                             date = formatDate(att.date),
                             dateRaw = att.date,
-                            checkIn = att.checkIn ?: "--:--",
-                            checkOut = att.checkOut ?: "--:--",
+                            checkIn = formatTimeFromApi(att.checkIn),
+                            checkOut = formatTimeFromApi(att.checkOut),
                             status = att.status,
                             workHours = att.workingHours ?: 0.0,
                             dayOfWeek = getDayOfWeek(att.date)
@@ -117,6 +214,22 @@ class AttendanceHistoryViewModel @Inject constructor(
             date.format(displayDateFormatter)
         } catch (e: Exception) {
             dateString
+        }
+    }
+
+    private fun formatTimeFromApi(timeString: String?): String {
+        if (timeString.isNullOrBlank()) return "--:--"
+        return try {
+            // Handle ISO datetime format like "2024-01-15T09:00:00.000Z"
+            if (timeString.contains("T")) {
+                val formatter = DateTimeFormatter.ISO_DATE_TIME
+                val dateTime = java.time.LocalDateTime.parse(timeString.substring(0, 19), formatter)
+                dateTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
+            } else {
+                timeString
+            }
+        } catch (e: Exception) {
+            timeString
         }
     }
 
@@ -168,4 +281,12 @@ data class AttendanceStats(
     val absentDays: Int,
     val lateDays: Int,
     val leaveDays: Int
+)
+
+data class TodayAttendanceStatus(
+    val isCheckedIn: Boolean,
+    val isCheckedOut: Boolean,
+    val checkInTime: String?,
+    val checkOutTime: String?,
+    val status: String
 )

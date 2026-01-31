@@ -70,9 +70,9 @@ class AttendanceManagementViewModel @Inject constructor(
                                 AttendanceAdminItem(
                                     id = record.id,
                                     employeeId = record.employeeId,
-                                    employeeName = "${record.employeeFirstName ?: ""} ${record.employeeLastName ?: ""}".trim()
+                                    employeeName = "${record.firstName ?: ""} ${record.lastName ?: ""}".trim()
                                         .ifEmpty { "Employee #${record.employeeId}" },
-                                    department = "", // May need to get from employee data
+                                    department = record.department ?: "",
                                     checkIn = formatTime(record.checkIn),
                                     checkOut = formatTime(record.checkOut),
                                     status = record.status,

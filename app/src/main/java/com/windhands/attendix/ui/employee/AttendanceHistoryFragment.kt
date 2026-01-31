@@ -31,6 +31,7 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
     override fun setupView() {
         setupRecyclerView()
         setupFilterChips()
+        setupCheckInOutButtons()
     }
 
     private fun setupRecyclerView() {
@@ -56,6 +57,15 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
         }
         binding.chipLeave.setOnClickListener {
             viewModel.setFilter(AttendanceFilter.LEAVE)
+        }
+    }
+
+    private fun setupCheckInOutButtons() {
+        binding.btnCheckIn.setOnClickListener {
+            viewModel.checkIn()
+        }
+        binding.btnCheckOut.setOnClickListener {
+            viewModel.checkOut()
         }
     }
 
@@ -102,6 +112,72 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
                         }
                     }
                 }
+
+                // Current time and date
+                launch {
+                    viewModel.currentTime.collect { time ->
+                        binding.tvCurrentTime.text = time
+                    }
+                }
+
+                launch {
+                    viewModel.currentDate.collect { date ->
+                        binding.tvCurrentDate.text = date
+                    }
+                }
+
+                // Today's attendance status
+                launch {
+                    viewModel.todayAttendance.collect { status ->
+                        updateCheckInOutButtons(status)
+                    }
+                }
+
+                // Check-in/out loading state
+                launch {
+                    viewModel.isCheckingInOut.collect { isLoading ->
+                        binding.btnCheckIn.isEnabled = !isLoading
+                        binding.btnCheckOut.isEnabled = !isLoading
+                    }
+                }
+
+                // Success events
+                launch {
+                    viewModel.successEvent.collect { message ->
+                        showSuccess(message)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateCheckInOutButtons(status: TodayAttendanceStatus?) {
+        if (status == null) {
+            // Not checked in yet
+            binding.tvStatusBadge.text = getString(R.string.dashboard_not_checked_in)
+            binding.btnCheckIn.isEnabled = true
+            binding.btnCheckOut.isEnabled = false
+            return
+        }
+
+        when {
+            status.isCheckedOut -> {
+                // Already checked out
+                binding.tvStatusBadge.text = getString(R.string.dashboard_checked_out)
+                binding.btnCheckIn.isEnabled = false
+                binding.btnCheckOut.isEnabled = false
+            }
+            status.isCheckedIn -> {
+                // Checked in, can check out
+                binding.tvStatusBadge.text = getString(R.string.dashboard_checked_in)
+                binding.btnCheckIn.isEnabled = false
+                binding.btnCheckOut.isEnabled = true
+            }
+            else -> {
+                // Not checked in
+                binding.tvStatusBadge.text = getString(R.string.dashboard_not_checked_in)
+                binding.btnCheckIn.isEnabled = true
+                binding.btnCheckOut.isEnabled = false
             }
         }
     }

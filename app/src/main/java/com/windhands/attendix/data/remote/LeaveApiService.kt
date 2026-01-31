@@ -1,10 +1,12 @@
 package com.windhands.attendix.data.remote
 
 import com.windhands.attendix.data.remote.dto.ApiResponse
+import com.windhands.attendix.data.remote.dto.ApplyLeaveRequest
 import com.windhands.attendix.data.remote.dto.LeaveBalanceResponse
 import com.windhands.attendix.data.remote.dto.LeaveRequestDto
 import com.windhands.attendix.data.remote.dto.LeaveRequestListResponse
 import com.windhands.attendix.data.remote.dto.LeaveRequestResponse
+import com.windhands.attendix.data.remote.dto.LeaveReviewRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -25,7 +27,7 @@ interface LeaveApiService {
 
     @POST("leave/apply")
     suspend fun applyLeave(
-        @Body request: Map<String, @JvmSuppressWildcards Any?>
+        @Body request: ApplyLeaveRequest
     ): ApiResponse<LeaveRequestDto>
 
     @DELETE("leave/{id}")
@@ -40,13 +42,13 @@ interface LeaveApiService {
     @PUT("leave/{id}/review")
     suspend fun approveLeaveRequest(
         @Path("id") requestId: Int,
-        @Body request: Map<String, @JvmSuppressWildcards Any?>
+        @Body request: LeaveReviewRequest
     ): ApiResponse<Unit>
 
     @PUT("leave/{id}/review")
     suspend fun rejectLeaveRequest(
         @Path("id") requestId: Int,
-        @Body request: Map<String, @JvmSuppressWildcards Any?>
+        @Body request: LeaveReviewRequest
     ): ApiResponse<Unit>
 
     @GET("leave/all-requests")

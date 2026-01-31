@@ -151,7 +151,8 @@ class AddEditEmployeeViewModel @Inject constructor(
         viewModelScope.launch {
             _submitState.value = SubmitState.Loading
             
-            val result = if (isEditMode && employeeId != null) {
+            if (isEditMode && employeeId != null) {
+                // Update existing employee
                 adminRepository.updateEmployee(
                     employeeId = employeeId,
                     firstName = currentForm.firstName,
@@ -161,8 +162,17 @@ class AddEditEmployeeViewModel @Inject constructor(
                     designation = currentForm.designation.takeIf { it.isNotBlank() },
                     role = currentForm.role,
                     joiningDate = currentForm.joiningDate.takeIf { it.isNotBlank() }
-                )
+                ).onSuccess { response ->
+                    if (response.success) {
+                        _submitState.value = SubmitState.Success("Employee updated successfully")
+                    } else {
+                        _submitState.value = SubmitState.Error(response.message ?: "Update failed")
+                    }
+                }.onFailure { exception ->
+                    _submitState.value = SubmitState.Error(exception.message ?: "Network error")
+                }
             } else {
+                // Create new employee
                 adminRepository.createEmployee(
                     firstName = currentForm.firstName,
                     lastName = currentForm.lastName,
@@ -172,29 +182,20 @@ class AddEditEmployeeViewModel @Inject constructor(
                     designation = currentForm.designation.takeIf { it.isNotBlank() },
                     role = currentForm.role,
                     joiningDate = currentForm.joiningDate.takeIf { it.isNotBlank() }
-                )
-            }
-            
-            result
-                .onSuccess { response ->
+                ).onSuccess { response ->
                     if (response.success) {
-                        val message = if (isEditMode) {
-                            "Employee updated successfully"
-                        } else {
-                            "Employee created successfully. Login credentials sent to their email."
-                        }
-                        _submitState.value = SubmitState.Success(message)
-                    } else {
-                        _submitState.value = SubmitState.Error(
-                            response.message ?: "Operation failed"
+                        val temporaryPassword = response.data?.temporaryPassword
+                        _submitState.value = SubmitState.Success(
+                            message = "Employee created successfully",
+                            temporaryPassword = temporaryPassword
                         )
+                    } else {
+                        _submitState.value = SubmitState.Error(response.message ?: "Creation failed")
                     }
+                }.onFailure { exception ->
+                    _submitState.value = SubmitState.Error(exception.message ?: "Network error")
                 }
-                .onFailure { exception ->
-                    _submitState.value = SubmitState.Error(
-                        exception.message ?: "Network error"
-                    )
-                }
+            }
         }
     }
 
@@ -221,7 +222,7 @@ data class EmployeeFormState(
 sealed class SubmitState {
     data object Idle : SubmitState()
     data object Loading : SubmitState()
-    data class Success(val message: String) : SubmitState()
+    data class Success(val message: String, val temporaryPassword: String? = null) : SubmitState()
     data class Error(val message: String) : SubmitState()
 }
 

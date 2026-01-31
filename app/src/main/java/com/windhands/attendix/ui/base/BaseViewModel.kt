@@ -28,7 +28,7 @@ abstract class BaseViewModel : ViewModel() {
 
     // Success messages as events (one-time)
     private val _successEvent = MutableSharedFlow<String>()
-    val successEvent: SharedFlow<String> = _successEvent.asSharedFlow()
+    open val successEvent: SharedFlow<String> = _successEvent.asSharedFlow()
 
     // Generic navigation event
     private val _navigationEvent = MutableSharedFlow<NavigationEvent>()
@@ -74,16 +74,16 @@ abstract class BaseViewModel : ViewModel() {
     protected fun <T> launchWithLoading(
         block: suspend () -> Resource<T>,
         onSuccess: (T) -> Unit = {},
-        onError: (String) -> Unit = { emitError(it) }
+        onError: (String, String?) -> Unit = { msg, _ -> emitError(msg) }
     ) {
         viewModelScope.launch {
             setLoading(true)
             when (val result = block()) {
                 is Resource.Success -> {
-                    result.data?.let { onSuccess(it) }
+                    onSuccess(result.data)
                 }
                 is Resource.Error -> {
-                    onError(result.message ?: "Unknown error occurred")
+                    onError(result.message, result.errorCode)
                 }
                 is Resource.Loading -> {
                     // Already handled by setLoading
@@ -99,15 +99,15 @@ abstract class BaseViewModel : ViewModel() {
     protected fun <T> launchSilent(
         block: suspend () -> Resource<T>,
         onSuccess: (T) -> Unit = {},
-        onError: (String) -> Unit = {}
+        onError: (String, String?) -> Unit = { _, _ -> }
     ) {
         viewModelScope.launch {
             when (val result = block()) {
                 is Resource.Success -> {
-                    result.data?.let { onSuccess(it) }
+                    onSuccess(result.data)
                 }
                 is Resource.Error -> {
-                    onError(result.message ?: "Unknown error occurred")
+                    onError(result.message, result.errorCode)
                 }
                 is Resource.Loading -> {}
             }

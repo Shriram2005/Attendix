@@ -94,6 +94,7 @@ data class AttendanceListResponse(
 data class AttendanceDto(
     @SerialName("id") val id: Int,
     @SerialName("employee_id") val employeeId: Int,
+    @SerialName("employee_code") val employeeCode: String? = null,
     @SerialName("date") val _date: String? = null,
     @SerialName("attendance_date") val _attendanceDate: String? = null,
     @SerialName("check_in") val _checkIn: String? = null,
@@ -112,7 +113,9 @@ data class AttendanceDto(
     @SerialName("employee_first_name") val employeeFirstName: String? = null,
     @SerialName("employee_last_name") val employeeLastName: String? = null,
     @SerialName("first_name") val _firstName: String? = null,
-    @SerialName("last_name") val _lastName: String? = null
+    @SerialName("last_name") val _lastName: String? = null,
+    @SerialName("department") val department: String? = null,
+    @SerialName("designation") val designation: String? = null
 ) {
     // Computed properties for compatibility
     val date: String get() = _date ?: _attendanceDate ?: ""
