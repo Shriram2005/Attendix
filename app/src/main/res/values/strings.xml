@@ -320,6 +320,13 @@
     <string name="empty_attendance_subtitle">No attendance records found for the selected date and filter.</string>
     <string name="attendance_select_date">Select Date</string>
     <string name="attendance_today">Today</string>
+    
+    <!-- Calendar -->
+    <string name="calendar_previous_month">Previous Month</string>
+    <string name="calendar_next_month">Next Month</string>
+    <string name="calendar_today">Today</string>
+    <string name="attendance_work_hours">Work Hours</string>
+    <string name="attendance_no_record">No record</string>
 
     <!-- Employee Creation Password Dialog -->
     <string name="employee_created_title">Employee Created Successfully</string>
