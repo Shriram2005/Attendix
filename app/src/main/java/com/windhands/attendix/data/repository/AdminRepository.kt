@@ -8,6 +8,7 @@ import com.windhands.attendix.data.remote.dto.CreateEmployeeResponse
 import com.windhands.attendix.data.remote.dto.EmployeeDto
 import com.windhands.attendix.data.remote.dto.EmployeeListResponse
 import com.windhands.attendix.data.remote.dto.UpdateEmployeeRequest
+import com.windhands.attendix.util.ErrorMessage
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,7 +22,7 @@ class AdminRepository @Inject constructor(
             val response = adminApiService.getDashboardStats()
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -44,7 +45,7 @@ class AdminRepository @Inject constructor(
                 data = wrappedData
             ))
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -59,7 +60,7 @@ class AdminRepository @Inject constructor(
                 )
             )
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -96,7 +97,7 @@ class AdminRepository @Inject constructor(
             val response = adminApiService.createEmployee(request)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -135,7 +136,7 @@ class AdminRepository @Inject constructor(
             val response = adminApiService.updateEmployee(employeeId, request)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -144,7 +145,7 @@ class AdminRepository @Inject constructor(
             val response = adminApiService.deleteEmployee(employeeId)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -153,7 +154,7 @@ class AdminRepository @Inject constructor(
             val response = adminApiService.activateEmployee(employeeId)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -162,7 +163,7 @@ class AdminRepository @Inject constructor(
             val response = adminApiService.deactivateEmployee(employeeId)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 }

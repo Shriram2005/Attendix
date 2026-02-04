@@ -51,6 +51,9 @@
     <string name="add_employee_info">A temporary password will be generated and sent to the employee\'s email address.</string>
     <string name="empty_no_notifications">No notifications</string>
     <string name="empty_leave_requests_subtitle">No leave requests match your current filter.</string>
+    <string name="empty_pending_leave_requests">No pending leave requests at the moment.</string>
+    <string name="empty_approved_leave_requests">No approved leave requests found.</string>
+    <string name="empty_rejected_leave_requests">No rejected leave requests found.</string>
 
     <!-- Network Restricted Screen -->
     <string name="restricted_title">Access Restricted</string>

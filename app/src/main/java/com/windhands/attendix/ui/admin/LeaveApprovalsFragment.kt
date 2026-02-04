@@ -129,6 +129,14 @@ class LeaveApprovalsFragment : Fragment() {
                         binding.chipAll.isChecked = filter == LeaveApprovalFilter.ALL
                         binding.chipApproved.isChecked = filter == LeaveApprovalFilter.APPROVED
                         binding.chipRejected.isChecked = filter == LeaveApprovalFilter.REJECTED
+                        
+                        // Update empty state subtitle based on filter
+                        binding.tvEmptySubtitle.text = when (filter) {
+                            LeaveApprovalFilter.PENDING -> getString(R.string.empty_pending_leave_requests)
+                            LeaveApprovalFilter.APPROVED -> getString(R.string.empty_approved_leave_requests)
+                            LeaveApprovalFilter.REJECTED -> getString(R.string.empty_rejected_leave_requests)
+                            LeaveApprovalFilter.ALL -> getString(R.string.empty_leave_requests_subtitle)
+                        }
                     }
                 }
 

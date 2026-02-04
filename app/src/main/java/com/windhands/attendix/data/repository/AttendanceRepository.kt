@@ -5,6 +5,7 @@ import com.windhands.attendix.data.remote.dto.ApiResponse
 import com.windhands.attendix.data.remote.dto.AttendanceDto
 import com.windhands.attendix.data.remote.dto.AttendanceListResponse
 import com.windhands.attendix.data.remote.dto.AttendanceStatsResponse
+import com.windhands.attendix.util.ErrorMessage
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,7 +25,7 @@ class AttendanceRepository @Inject constructor(
                 )
             )
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -33,7 +34,7 @@ class AttendanceRepository @Inject constructor(
             val response = attendanceApiService.checkIn()
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -42,7 +43,7 @@ class AttendanceRepository @Inject constructor(
             val response = attendanceApiService.checkOut()
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -59,7 +60,7 @@ class AttendanceRepository @Inject constructor(
             )
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -71,7 +72,7 @@ class AttendanceRepository @Inject constructor(
             val response = attendanceApiService.getAttendanceStats(month, year)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -98,7 +99,7 @@ class AttendanceRepository @Inject constructor(
                 data = wrappedData
             ))
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 }

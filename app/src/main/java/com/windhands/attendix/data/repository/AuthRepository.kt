@@ -5,6 +5,7 @@ import com.windhands.attendix.data.remote.dto.LoginRequest
 import com.windhands.attendix.data.remote.dto.LoginResponse
 import com.windhands.attendix.data.remote.dto.ProfileResponse
 import com.windhands.attendix.data.remote.dto.ApiResponse
+import com.windhands.attendix.util.ErrorMessage
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,7 +23,7 @@ class AuthRepository @Inject constructor(
                 Result.failure(Exception(response.message ?: response.error ?: "Login failed"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -35,7 +36,7 @@ class AuthRepository @Inject constructor(
                 Result.failure(Exception(response.message ?: "Logout failed"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -44,7 +45,7 @@ class AuthRepository @Inject constructor(
             val response = authApiService.forgotPassword(mapOf("email" to email))
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -55,7 +56,7 @@ class AuthRepository @Inject constructor(
             )
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -68,7 +69,7 @@ class AuthRepository @Inject constructor(
                 Result.failure(Exception(response.message ?: "Failed to load profile"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -91,7 +92,7 @@ class AuthRepository @Inject constructor(
                 Result.failure(Exception(response.message ?: "Failed to update profile"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -108,7 +109,7 @@ class AuthRepository @Inject constructor(
             )
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 }

@@ -7,6 +7,7 @@ import com.windhands.attendix.data.remote.dto.LeaveBalanceResponse
 import com.windhands.attendix.data.remote.dto.LeaveRequestDto
 import com.windhands.attendix.data.remote.dto.LeaveRequestListResponse
 import com.windhands.attendix.data.remote.dto.LeaveReviewRequest
+import com.windhands.attendix.util.ErrorMessage
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,7 +21,7 @@ class LeaveRepository @Inject constructor(
             val response = leaveApiService.getLeaveBalance()
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -39,7 +40,7 @@ class LeaveRepository @Inject constructor(
                 data = wrappedData
             ))
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -60,7 +61,7 @@ class LeaveRepository @Inject constructor(
             val response = leaveApiService.applyLeave(request)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -69,7 +70,7 @@ class LeaveRepository @Inject constructor(
             val response = leaveApiService.cancelLeaveRequest(requestId)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -88,7 +89,7 @@ class LeaveRepository @Inject constructor(
                 data = wrappedData
             ))
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -101,7 +102,7 @@ class LeaveRepository @Inject constructor(
             val response = leaveApiService.approveLeaveRequest(requestId, request)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -114,7 +115,7 @@ class LeaveRepository @Inject constructor(
             val response = leaveApiService.rejectLeaveRequest(requestId, request)
             Result.success(response)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 
@@ -136,7 +137,7 @@ class LeaveRepository @Inject constructor(
                 data = wrappedData
             ))
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(ErrorMessage.toException(e))
         }
     }
 }
