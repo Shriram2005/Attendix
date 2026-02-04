@@ -48,7 +48,7 @@
     <string name="empty_no_attendance">No attendance records found</string>
     <string name="empty_no_leave_requests">No leave requests found</string>
     <string name="empty_no_employees">No employees found</string>
-    <string name="add_employee_info">A temporary password will be generated and sent to the employee\'s email address.</string>
+    <string name="add_employee_info">Please fill in the employee details below to create a new account.</string>
     <string name="empty_no_notifications">No notifications</string>
     <string name="empty_leave_requests_subtitle">No leave requests match your current filter.</string>
     <string name="empty_pending_leave_requests">No pending leave requests at the moment.</string>
@@ -334,9 +334,11 @@
 
     <!-- Employee Creation Password Dialog -->
     <string name="employee_created_title">Employee Created Successfully</string>
-    <string name="employee_created_message">The employee has been created successfully. Please share the temporary password with the employee securely.</string>
+    <string name="employee_created_message">The employee has been created successfully. Please share the username and temporary password with the employee securely.</string>
+    <string name="employee_username_label">Username (Employee ID)</string>
+    <string name="copy_username">Copy username</string>
     <string name="temporary_password_label">Temporary Password</string>
     <string name="toggle_password_visibility">Toggle password visibility</string>
     <string name="copy_password">Copy password</string>
-    <string name="password_warning_message">Make sure to save or share this password now. It cannot be retrieved later.</string>
+    <string name="password_warning_message">Make sure to save or share these credentials now. They cannot be retrieved later.</string>
 </resources>

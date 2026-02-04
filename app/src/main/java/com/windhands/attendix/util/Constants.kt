@@ -28,7 +28,6 @@ object Constants {
 
     // User Roles
     const val ROLE_ADMIN = "admin"
-    const val ROLE_HR = "hr"
     const val ROLE_EMPLOYEE = "employee"
 
     // Attendance Status

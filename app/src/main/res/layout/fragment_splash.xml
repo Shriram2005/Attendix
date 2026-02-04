@@ -11,14 +11,13 @@
         android:id="@+id/iv_logo"
         android:layout_width="@dimen/splash_logo_size"
         android:layout_height="@dimen/splash_logo_size"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/app_icon"
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toTopOf="@id/tv_app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:tint="@color/white" />
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <!-- App Name -->
     <TextView

@@ -274,9 +274,9 @@ class AddEditEmployeeFragment : Fragment() {
                         
                         when (state) {
                             is SubmitState.Success -> {
-                                if (state.temporaryPassword != null) {
+                                if (state.temporaryPassword != null && state.employeeId != null) {
                                     // Show password dialog for new employee
-                                    showPasswordDialog(state.temporaryPassword)
+                                    showPasswordDialog(state.employeeId, state.temporaryPassword)
                                 } else {
                                     Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                                     viewModel.resetSubmitState()
@@ -296,8 +296,19 @@ class AddEditEmployeeFragment : Fragment() {
         }
     }
 
-    private fun showPasswordDialog(password: String) {
+    private fun showPasswordDialog(username: String, password: String) {
         val dialogBinding = DialogPasswordDisplayBinding.inflate(layoutInflater)
+        
+        // Set the username text
+        dialogBinding.tvUsername.text = username
+        
+        // Setup username copy button
+        dialogBinding.btnCopyUsername.setOnClickListener {
+            val clipboard = requireContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText("Username", username)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(requireContext(), "Username copied to clipboard", Toast.LENGTH_SHORT).show()
+        }
         
         // Set the password text
         dialogBinding.etPassword.setText(password)
@@ -316,7 +327,7 @@ class AddEditEmployeeFragment : Fragment() {
             dialogBinding.etPassword.setSelection(dialogBinding.etPassword.text?.length ?: 0)
         }
         
-        // Setup copy button
+        // Setup password copy button
         dialogBinding.btnCopy.setOnClickListener {
             val clipboard = requireContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText("Password", password)
@@ -331,6 +342,7 @@ class AddEditEmployeeFragment : Fragment() {
             .setPositiveButton(R.string.done) { dialog, _ ->
                 dialog.dismiss()
                 viewModel.resetSubmitState()
+                findNavController().navigateUp()
             }
             .show()
     }

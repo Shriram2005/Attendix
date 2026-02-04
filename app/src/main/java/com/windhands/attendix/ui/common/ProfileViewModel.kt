@@ -81,7 +81,6 @@ class ProfileViewModel @Inject constructor(
     private fun formatRole(role: String): String {
         return when (role.lowercase()) {
             "admin" -> "Administrator"
-            "hr" -> "Human Resources"
             "employee" -> "Employee"
             else -> role.replaceFirstChar { it.uppercase() }
         }

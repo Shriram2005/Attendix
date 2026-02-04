@@ -44,7 +44,7 @@ class AddEditEmployeeViewModel @Inject constructor(
         "Other"
     )
 
-    val roles = listOf("employee", "hr", "admin")
+    val roles = listOf("employee", "admin")
 
     init {
         if (isEditMode && employeeId != null) {
@@ -186,10 +186,15 @@ class AddEditEmployeeViewModel @Inject constructor(
                 ).onSuccess { response ->
                     if (response.success) {
                         val temporaryPassword = response.data?.temporaryPassword
-                        _formState.value = _formState.value.copy(temporaryPassword = temporaryPassword)
+                        val employeeId = response.data?.employee?.employeeId
+                        _formState.value = _formState.value.copy(
+                            temporaryPassword = temporaryPassword,
+                            employeeId = employeeId
+                        )
                         _submitState.value = SubmitState.Success(
                             message = "Employee created successfully",
-                            temporaryPassword = temporaryPassword
+                            temporaryPassword = temporaryPassword,
+                            employeeId = employeeId
                         )
                     } else {
                         _submitState.value = SubmitState.Error(response.message ?: "Creation failed")
@@ -211,6 +216,7 @@ data class EmployeeFormState(
     val lastName: String = "",
     val email: String = "",
     val temporaryPassword: String? = null,
+    val employeeId: String? = null,
     val phone: String = "",
     val department: String = "",
     val designation: String = "",
@@ -225,7 +231,11 @@ data class EmployeeFormState(
 sealed class SubmitState {
     data object Idle : SubmitState()
     data object Loading : SubmitState()
-    data class Success(val message: String, val temporaryPassword: String? = null) : SubmitState()
+    data class Success(
+        val message: String,
+        val temporaryPassword: String? = null,
+        val employeeId: String? = null
+    ) : SubmitState()
     data class Error(val message: String) : SubmitState()
 }
 

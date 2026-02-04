@@ -56,6 +56,12 @@ class EmployeeManagementFragment : Fragment() {
         observeViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Refresh employee list when returning to this fragment
+        viewModel.loadEmployees()
+    }
+
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()

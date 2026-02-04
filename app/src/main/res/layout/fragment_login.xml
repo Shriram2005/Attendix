@@ -32,13 +32,11 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="@dimen/spacing_xxl"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@drawable/app_icon"
             android:contentDescription="@string/app_name"
-            android:background="@drawable/bg_circle_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Welcome Text -->
         <TextView

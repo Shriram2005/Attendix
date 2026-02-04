@@ -97,7 +97,7 @@ class SessionManager @Inject constructor(
 
     val isAdmin: Flow<Boolean> = context.dataStore.data.map { preferences ->
         val role = preferences[KEY_ROLE]?.lowercase()
-        role == "admin" || role == "hr"
+        role == "admin"
     }
 
     suspend fun saveSession(

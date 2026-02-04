@@ -78,7 +78,6 @@ class AdminRepository @Inject constructor(
             // Map role name to roleId
             val roleId = when (role.lowercase()) {
                 "admin" -> 1
-                "hr" -> 2
                 "employee" -> 3
                 else -> 3 // Default to employee
             }
@@ -116,7 +115,6 @@ class AdminRepository @Inject constructor(
             val roleId = role?.let {
                 when (it.lowercase()) {
                     "admin" -> 1
-                    "hr" -> 2
                     "employee" -> 3
                     else -> 3
                 }

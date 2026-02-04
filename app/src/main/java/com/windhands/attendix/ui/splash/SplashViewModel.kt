@@ -81,7 +81,7 @@ class SplashViewModel @Inject constructor(
 
     private suspend fun navigateToAppropriateScreen() {
         val role = sessionManager.role.first()
-        val isAdmin = role == Constants.ROLE_ADMIN || role == Constants.ROLE_HR
+        val isAdmin = role == Constants.ROLE_ADMIN
         
         if (isAdmin) {
             _splashState.value = SplashState.LoggedInAsAdmin

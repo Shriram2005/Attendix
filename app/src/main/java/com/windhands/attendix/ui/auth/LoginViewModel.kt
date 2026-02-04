@@ -92,7 +92,7 @@ class LoginViewModel @Inject constructor(
 
                     // Check role and navigate
                     val isAdmin = response.user.role == Constants.ROLE_ADMIN || 
-                                  response.user.role == Constants.ROLE_HR
+                                  response.user.role == Constants.ROLE_ADMIN
                     if (isAdmin) {
                         navigate(NavigationEvent.NavigateToAdminDashboard)
                     } else {
