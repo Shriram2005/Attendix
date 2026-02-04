@@ -1,6 +1,7 @@
 package com.windhands.attendix.ui.admin
 
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,7 @@ class AddEditEmployeeFragment : Fragment() {
     }
 
     private val viewModel: AddEditEmployeeViewModel by viewModels()
+    private var isPasswordVisible = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,8 +58,30 @@ class AddEditEmployeeFragment : Fragment() {
         setupDropdowns()
         setupDatePicker()
         setupTextListeners()
+        setupPasswordToggle()
         setupSubmitButton()
         observeViewModel()
+    }
+
+    private fun setupPasswordToggle() {
+        binding.tilPassword.setEndIconOnClickListener {
+            togglePasswordVisibility()
+        }
+    }
+
+    private fun togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible
+        binding.etPassword.inputType = if (isPasswordVisible) {
+            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+        } else {
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        }
+        binding.tilPassword.endIconDrawable = if (isPasswordVisible) {
+            requireContext().getDrawable(R.drawable.ic_visibility_off)
+        } else {
+            requireContext().getDrawable(R.drawable.ic_visibility)
+        }
+        binding.etPassword.setSelection(binding.etPassword.text?.length ?: 0)
     }
 
     private fun setupToolbar() {
@@ -118,6 +142,18 @@ class AddEditEmployeeFragment : Fragment() {
         }
         binding.tilJoiningDate.setEndIconOnClickListener {
             showDatePicker()
+        }
+    }
+
+    private fun formatJoiningDateForDisplay(rawDate: String): String? {
+        if (rawDate.isBlank()) return null
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+            val parsed = inputFormat.parse(rawDate)
+            parsed?.let { outputFormat.format(it) }
+        } catch (e: Exception) {
+            rawDate
         }
     }
 
@@ -194,6 +230,24 @@ class AddEditEmployeeFragment : Fragment() {
                         }
                         if (binding.etPhone.text.toString() != form.phone) {
                             binding.etPhone.setText(form.phone)
+                        }
+                        val displayJoiningDate = form.joiningDate.let { formatJoiningDateForDisplay(it) }
+                        if (displayJoiningDate != null) {
+                            if (binding.etJoiningDate.text.toString() != displayJoiningDate) {
+                                binding.etJoiningDate.setText(displayJoiningDate)
+                            }
+                        } else if (binding.etJoiningDate.text?.isNotBlank() == true) {
+                            binding.etJoiningDate.setText("")
+                        }
+                        val passwordValue = form.temporaryPassword?.takeIf { it.isNotBlank() }
+                        val shouldShowPassword = passwordValue != null || viewModel.isEditMode
+                        binding.layoutPassword.isVisible = shouldShowPassword
+                        if (shouldShowPassword) {
+                            val displayPassword = passwordValue ?: getString(R.string.password_unavailable)
+                            if (binding.etPassword.text.toString() != displayPassword) {
+                                binding.etPassword.setText(displayPassword)
+                                binding.etPassword.setSelection(binding.etPassword.text?.length ?: 0)
+                            }
                         }
                         if (binding.actvDepartment.text.toString() != form.department) {
                             binding.actvDepartment.setText(form.department, false)
@@ -277,7 +331,6 @@ class AddEditEmployeeFragment : Fragment() {
             .setPositiveButton(R.string.done) { dialog, _ ->
                 dialog.dismiss()
                 viewModel.resetSubmitState()
-                findNavController().navigateUp()
             }
             .show()
     }

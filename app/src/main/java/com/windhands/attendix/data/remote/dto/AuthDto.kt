@@ -27,7 +27,7 @@ data class UserDto(
     @SerialName("department") val department: String? = null,
     @SerialName("designation") val designation: String? = null,
     @SerialName("status") val status: String = "active",
-    @SerialName("joining_date") val joiningDate: String? = null
+    @SerialName("date_of_joining") val dateOfJoining: String? = null
 )
 
 @Serializable
@@ -69,7 +69,7 @@ data class ProfileResponse(
                 department = department,
                 designation = designation,
                 status = if (isActive == true) "active" else "inactive",
-                joiningDate = dateOfJoining
+                dateOfJoining = dateOfJoining
             )
         }
         return null

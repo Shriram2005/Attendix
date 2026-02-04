@@ -91,7 +91,7 @@ class EmployeeManagementViewModel @Inject constructor(
                                 designation = employee.designation,
                                 role = employee.role,
                                 status = employee.status,
-                                joiningDate = employee.joiningDate
+                                joiningDate = employee.dateOfJoining
                             )
                         } ?: emptyList()
                         _employees.value = employeeList

@@ -68,7 +68,8 @@ class AddEditEmployeeViewModel @Inject constructor(
                             department = employee.department ?: "",
                             designation = employee.designation ?: "",
                             role = employee.role,
-                            joiningDate = employee.joiningDate?.substring(0, 10) ?: ""
+                            joiningDate = employee.dateOfJoining?.substring(0, 10) ?: "",
+                            temporaryPassword = employee.temporaryPassword
                         )
                         _loadState.value = LoadState.Success
                     } else {
@@ -185,6 +186,7 @@ class AddEditEmployeeViewModel @Inject constructor(
                 ).onSuccess { response ->
                     if (response.success) {
                         val temporaryPassword = response.data?.temporaryPassword
+                        _formState.value = _formState.value.copy(temporaryPassword = temporaryPassword)
                         _submitState.value = SubmitState.Success(
                             message = "Employee created successfully",
                             temporaryPassword = temporaryPassword
@@ -208,6 +210,7 @@ data class EmployeeFormState(
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
+    val temporaryPassword: String? = null,
     val phone: String = "",
     val department: String = "",
     val designation: String = "",

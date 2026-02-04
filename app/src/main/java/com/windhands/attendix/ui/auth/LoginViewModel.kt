@@ -84,7 +84,7 @@ class LoginViewModel @Inject constructor(
                         department = response.user.department,
                         designation = response.user.designation ?: "",
                         status = response.user.status,
-                        joiningDate = response.user.joiningDate ?: "",
+                        joiningDate = response.user.dateOfJoining ?: "",
                         rememberMe = _rememberMe.value
                     )
                     

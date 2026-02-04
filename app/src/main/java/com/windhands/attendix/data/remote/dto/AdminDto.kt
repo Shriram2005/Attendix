@@ -47,21 +47,18 @@ data class EmployeeDto(
     @SerialName("first_name") val firstName: String,
     @SerialName("last_name") val lastName: String,
     @SerialName("email") val email: String,
+    @SerialName("temporary_password") val temporaryPassword: String? = null,
     @SerialName("phone") val phone: String? = null,
     @SerialName("department") val department: String? = null,
     @SerialName("designation") val designation: String? = null,
     @SerialName("role") val role: String,
     @SerialName("status") val _status: String? = null,
     @SerialName("is_active") val isActive: Boolean? = null,
-    @SerialName("joining_date") val joiningDate: String? = null,
-    @SerialName("date_of_joining") val _dateOfJoining: String? = null,
+    @SerialName("date_of_joining") val dateOfJoining: String? = null,
     @SerialName("created_at") val createdAt: String? = null
 ) {
     // Computed status: use _status if present, otherwise derive from isActive
     val status: String get() = _status ?: if (isActive == true) "active" else "inactive"
-    
-    // Computed joining date: backend uses different field names
-    val dateOfJoining: String? get() = joiningDate ?: _dateOfJoining
 }
 
 @Serializable
@@ -204,7 +201,7 @@ data class CreateEmployeeRequest(
     @SerialName("designation") val designation: String,
     @SerialName("department") val department: String,
     @SerialName("roleId") val roleId: Int,
-    @SerialName("dateOfJoining") val dateOfJoining: String? = null
+    @SerialName("date_of_joining") val dateOfJoining: String? = null
 )
 
 @Serializable

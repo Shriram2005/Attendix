@@ -46,7 +46,7 @@ class ProfileViewModel @Inject constructor(
                                 designation = user.designation ?: "Employee",
                                 department = user.department ?: "Not assigned",
                                 role = formatRole(user.role),
-                                dateOfJoining = formatDate(user.joiningDate),
+                                dateOfJoining = formatDate(user.dateOfJoining),
                                 isActive = user.status == "active"
                             )
                         )

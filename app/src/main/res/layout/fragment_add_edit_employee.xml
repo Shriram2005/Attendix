@@ -99,6 +99,41 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Account Password (Read-only) -->
+            <LinearLayout
+                android:id="@+id/layoutPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPassword"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/login_password"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_visibility">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        android:cursorVisible="false"
+                        android:importantForAutofill="no"
+                        android:inputType="textPassword"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
             <!-- Phone -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPhone"
