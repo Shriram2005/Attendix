@@ -9,9 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
-import java.util.TimeZone
 
 // View Extensions
 fun View.visible() {
@@ -102,29 +107,53 @@ fun String.toDisplayDate(): String {
 }
 
 fun String.toDisplayTime(): String {
-    return try {
-        val inputFormat = SimpleDateFormat(Constants.TIME_FORMAT_API, Locale.getDefault()).apply {
-            timeZone = TimeZone.getTimeZone("UTC")
-        }
-        val outputFormat = SimpleDateFormat(Constants.TIME_FORMAT_DISPLAY, Locale.getDefault())
-        val date = inputFormat.parse(this)
-        date?.let { outputFormat.format(it) } ?: this
-    } catch (e: Exception) {
-        this
+    val timeFormatter = DateTimeFormatter.ofPattern(Constants.TIME_FORMAT_DISPLAY, Locale.getDefault())
+    val parsedDateTime = parseApiDateTime(this)
+    if (parsedDateTime != null) {
+        return parsedDateTime.format(timeFormatter)
     }
+
+    val localTime = parseApiLocalTime(this)
+    return localTime?.format(timeFormatter) ?: this
 }
 
 fun String.toDisplayDateTime(): String {
-    return try {
-        val inputFormat = SimpleDateFormat(Constants.TIME_FORMAT_API, Locale.getDefault()).apply {
-            timeZone = TimeZone.getTimeZone("UTC")
-        }
-        val outputFormat = SimpleDateFormat(Constants.DATE_TIME_FORMAT_DISPLAY, Locale.getDefault())
-        val date = inputFormat.parse(this)
-        date?.let { outputFormat.format(it) } ?: this
-    } catch (e: Exception) {
-        this
+    val dateTimeFormatter =
+        DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMAT_DISPLAY, Locale.getDefault())
+    return parseApiDateTime(this)?.format(dateTimeFormatter) ?: this
+}
+
+private fun parseApiDateTime(value: String): ZonedDateTime? {
+    val normalized = value.trim()
+    if (normalized.isBlank()) return null
+
+    val isoValue = if (normalized.contains(' ') && !normalized.contains('T')) {
+        normalized.replace(' ', 'T')
+    } else {
+        normalized
     }
+
+    val parsed = runCatching {
+        DateTimeFormatter.ISO_DATE_TIME.parseBest(
+            isoValue,
+            ZonedDateTime::from,
+            OffsetDateTime::from,
+            LocalDateTime::from
+        )
+    }.getOrNull() ?: return null
+
+    return when (parsed) {
+        is ZonedDateTime -> parsed.withZoneSameInstant(ZoneId.systemDefault())
+        is OffsetDateTime -> parsed.atZoneSameInstant(ZoneId.systemDefault())
+        is LocalDateTime -> parsed.atZone(ZoneId.systemDefault())
+        else -> null
+    }
+}
+
+private fun parseApiLocalTime(value: String): LocalTime? {
+    val normalized = value.trim()
+    if (normalized.isBlank()) return null
+    return runCatching { LocalTime.parse(normalized, DateTimeFormatter.ISO_LOCAL_TIME) }.getOrNull()
 }
 
 fun Date.toApiDateString(): String {

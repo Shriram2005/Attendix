@@ -5,6 +5,7 @@ import com.windhands.attendix.data.remote.dto.AttendanceDto
 import com.windhands.attendix.data.repository.AttendanceRepository
 import com.windhands.attendix.ui.base.BaseViewModel
 import com.windhands.attendix.ui.employee.view.AttendanceStatus
+import com.windhands.attendix.util.toDisplayTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -266,18 +267,7 @@ class AttendanceHistoryViewModel @Inject constructor(
 
     private fun formatTimeFromApi(timeString: String?): String {
         if (timeString.isNullOrBlank()) return "--:--"
-        return try {
-            // Handle ISO datetime format like "2024-01-15T09:00:00.000Z"
-            if (timeString.contains("T")) {
-                val formatter = DateTimeFormatter.ISO_DATE_TIME
-                val dateTime = java.time.LocalDateTime.parse(timeString.substring(0, 19), formatter)
-                dateTime.format(DateTimeFormatter.ofPattern("h:mm a"))
-            } else {
-                timeString
-            }
-        } catch (e: Exception) {
-            timeString
-        }
+        return timeString.toDisplayTime()
     }
 
     private fun getDayOfWeek(dateString: String): String {

@@ -3,6 +3,7 @@ package com.windhands.attendix.ui.admin
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.windhands.attendix.data.repository.AttendanceRepository
+import com.windhands.attendix.util.toDisplayTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -108,18 +109,7 @@ class AttendanceManagementViewModel @Inject constructor(
 
     private fun formatTime(timeString: String?): String {
         if (timeString.isNullOrBlank()) return "--:--"
-        return try {
-            // Handle ISO datetime format
-            if (timeString.contains("T")) {
-                val formatter = DateTimeFormatter.ISO_DATE_TIME
-                val dateTime = java.time.LocalDateTime.parse(timeString.substring(0, 19), formatter)
-                dateTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
-            } else {
-                timeString
-            }
-        } catch (e: Exception) {
-            timeString
-        }
+        return timeString.toDisplayTime()
     }
 }
 

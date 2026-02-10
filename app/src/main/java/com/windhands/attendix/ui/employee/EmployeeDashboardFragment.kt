@@ -18,11 +18,10 @@ import com.windhands.attendix.databinding.FragmentEmployeeDashboardBinding
 import com.windhands.attendix.ui.base.BaseFragment
 import com.windhands.attendix.ui.employee.adapter.LeaveBalanceMiniAdapter
 import com.windhands.attendix.util.gone
+import com.windhands.attendix.util.toDisplayTime
 import com.windhands.attendix.util.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.time.format.DateTimeFormatter
-import java.time.LocalDateTime
 
 /**
  * Employee Dashboard Screen Fragment
@@ -243,18 +242,6 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
     
     private fun formatTimeDisplay(timeString: String?): String? {
         if (timeString.isNullOrBlank()) return null
-        return try {
-            // Handle ISO datetime format like "2024-01-15T09:00:00.000Z"
-            if (timeString.contains("T")) {
-                val formatter = DateTimeFormatter.ISO_DATE_TIME
-                val dateTime = LocalDateTime.parse(timeString.substring(0, 19), formatter)
-                dateTime.format(DateTimeFormatter.ofPattern("h:mm a"))
-            } else {
-                // Already in correct format or simple time format
-                timeString
-            }
-        } catch (e: Exception) {
-            timeString
-        }
+        return timeString.toDisplayTime()
     }
 }
