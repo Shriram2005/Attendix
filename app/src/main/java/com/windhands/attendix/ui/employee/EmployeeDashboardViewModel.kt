@@ -250,7 +250,20 @@ class EmployeeDashboardViewModel @Inject constructor(
                     loadDashboardData() // Refresh
                 },
                 onFailure = { error ->
-                    emitError(error.message ?: "Failed to record attendance")
+                    val errorMsg = error.message ?: "Failed to record attendance"
+                    emitError(errorMsg)
+                    // If server says already checked in, directly update UI state
+                    if (errorMsg.contains("already checked in", ignoreCase = true)) {
+                        _todayAttendance.value = TodayAttendance(
+                            isCheckedIn = true,
+                            isCheckedOut = false,
+                            checkInTime = null,
+                            checkOutTime = null,
+                            status = "present",
+                            totalHours = null
+                        )
+                    }
+                    loadDashboardData() // Refresh to sync state
                 }
             )
 
