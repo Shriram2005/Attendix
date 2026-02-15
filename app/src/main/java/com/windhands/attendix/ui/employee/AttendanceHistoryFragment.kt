@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.windhands.attendix.R
 import com.windhands.attendix.databinding.FragmentAttendanceHistoryBinding
 import com.windhands.attendix.ui.base.BaseFragment
@@ -69,11 +70,33 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
 
     private fun setupCheckInOutButtons() {
         binding.btnCheckIn.setOnClickListener {
-            viewModel.checkIn()
+            showCheckInConfirmation()
         }
         binding.btnCheckOut.setOnClickListener {
-            viewModel.checkOut()
+            showCheckOutConfirmation()
         }
+    }
+
+    private fun showCheckInConfirmation() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Check In")
+            .setMessage("Are you sure you want to check in?")
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.checkIn()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showCheckOutConfirmation() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Check Out")
+            .setMessage("Are you sure you want to check out?")
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.checkOut()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     override fun setupObservers() {
@@ -156,6 +179,13 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
                         showSuccess(message)
                     }
                 }
+
+                // Live working hours
+                launch {
+                    viewModel.liveWorkingHours.collect { hours ->
+                        hours?.let { updateLiveHours(it) }
+                    }
+                }
             }
         }
     }
@@ -232,7 +262,12 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
             }
             status.isCheckedIn -> {
                 // Checked in, can check out
-                binding.tvStatusBadge.text = getString(R.string.dashboard_checked_in)
+                val hoursText = viewModel.liveWorkingHours.value?.let { hours ->
+                    val h = hours.toInt()
+                    val minutes = ((hours - h) * 60).toInt()
+                    " • ${h}h ${minutes}m"
+                } ?: ""
+                binding.tvStatusBadge.text = getString(R.string.dashboard_checked_in) + hoursText
                 binding.btnCheckIn.isEnabled = false
                 binding.btnCheckOut.isEnabled = true
             }
@@ -242,6 +277,15 @@ class AttendanceHistoryFragment : BaseFragment<FragmentAttendanceHistoryBinding>
                 binding.btnCheckIn.isEnabled = true
                 binding.btnCheckOut.isEnabled = false
             }
+        }
+    }
+
+    private fun updateLiveHours(hours: Double) {
+        val status = viewModel.todayAttendance.value
+        if (status?.isCheckedIn == true && !status.isCheckedOut) {
+            val h = hours.toInt()
+            val minutes = ((hours - h) * 60).toInt()
+            binding.tvStatusBadge.text = getString(R.string.dashboard_checked_in) + " • ${h}h ${minutes}m"
         }
     }
 }

@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.windhands.attendix.R
 import com.windhands.attendix.databinding.FragmentEmployeeDashboardBinding
 import com.windhands.attendix.ui.base.BaseFragment
@@ -60,7 +61,7 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
         with(binding) {
             // Check-in/Check-out button
             btnCheckInOut.setOnClickListener {
-                viewModel.checkInOut()
+                showCheckInOutConfirmation()
             }
 
             // View all leaves
@@ -73,6 +74,27 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
                 findNavController().navigate(R.id.action_employeeDashboard_to_profile)
             }
         }
+    }
+
+    private fun showCheckInOutConfirmation() {
+        val currentAttendance = viewModel.todayAttendance.value
+        val isCheckIn = currentAttendance?.isCheckedIn != true || currentAttendance.isCheckedOut
+
+        val title = if (isCheckIn) "Check In" else "Check Out"
+        val message = if (isCheckIn) {
+            "Are you sure you want to check in?"
+        } else {
+            "Are you sure you want to check out?"
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.checkInOut()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     override fun setupObservers() {
@@ -161,6 +183,13 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
                         showError(message)
                     }
                 }
+
+                // Live working hours
+                launch {
+                    viewModel.liveWorkingHours.collect { hours ->
+                        hours?.let { updateLiveHours(it) }
+                    }
+                }
             }
         }
     }
@@ -211,8 +240,10 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
                 tvCheckInTime.text = formatTimeDisplay(attendance.checkInTime) ?: "--:--"
                 tvCheckOutTime.text = formatTimeDisplay(attendance.checkOutTime) ?: "--:--"
                 
-                val hours = attendance.totalHours?.toInt() ?: 0
-                val minutes = ((attendance.totalHours ?: 0.0) - hours) * 60
+                // Use live hours if available, otherwise use totalHours
+                val hoursToDisplay = viewModel.liveWorkingHours.value ?: attendance.totalHours
+                val hours = hoursToDisplay?.toInt() ?: 0
+                val minutes = ((hoursToDisplay ?: 0.0) - hours) * 60
                 tvTotalHours.text = "${hours}h ${minutes.toInt()}m"
 
                 when {
@@ -233,6 +264,14 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
                     }
                 }
             }
+        }
+    }
+
+    private fun updateLiveHours(hours: Double) {
+        with(binding) {
+            val h = hours.toInt()
+            val minutes = ((hours - h) * 60).toInt()
+            tvTotalHours.text = "${h}h ${minutes}m"
         }
     }
 

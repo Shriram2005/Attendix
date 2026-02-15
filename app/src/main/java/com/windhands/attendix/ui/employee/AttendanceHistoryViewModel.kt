@@ -7,6 +7,8 @@ import com.windhands.attendix.ui.base.BaseViewModel
 import com.windhands.attendix.ui.employee.view.AttendanceStatus
 import com.windhands.attendix.util.toDisplayTime
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -16,7 +18,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.YearMonth
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
@@ -52,6 +58,11 @@ class AttendanceHistoryViewModel @Inject constructor(
     private val _isCheckingInOut = MutableStateFlow(false)
     val isCheckingInOut: StateFlow<Boolean> = _isCheckingInOut.asStateFlow()
 
+    private val _liveWorkingHours = MutableStateFlow<Double?>(null)
+    val liveWorkingHours: StateFlow<Double?> = _liveWorkingHours.asStateFlow()
+
+    private var timerJob: Job? = null
+
     private val _successEvent = MutableSharedFlow<String>()
     override val successEvent: SharedFlow<String> = _successEvent.asSharedFlow()
 
@@ -62,6 +73,7 @@ class AttendanceHistoryViewModel @Inject constructor(
     private val apiDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
     private val dateFormat = SimpleDateFormat("EEEE, MMM d, yyyy", Locale.getDefault())
+    private val checkInTimeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
 
     init {
         updateTime()
@@ -88,6 +100,14 @@ class AttendanceHistoryViewModel @Inject constructor(
                             checkOutTime = att.checkOut,
                             status = att.status
                         )
+
+                        // Start or stop timer based on check-in/out status
+                        if (att.checkIn != null && att.checkOut == null) {
+                            startWorkingHoursTimer(att.checkIn)
+                        } else {
+                            stopWorkingHoursTimer()
+                            _liveWorkingHours.value = att.workingHours
+                        }
                     } ?: run {
                         _todayAttendance.value = TodayAttendanceStatus(
                             isCheckedIn = false,
@@ -96,6 +116,8 @@ class AttendanceHistoryViewModel @Inject constructor(
                             checkOutTime = null,
                             status = "not_checked_in"
                         )
+                        stopWorkingHoursTimer()
+                        _liveWorkingHours.value = null
                     }
                 }
                 .onFailure {
@@ -106,6 +128,8 @@ class AttendanceHistoryViewModel @Inject constructor(
                         checkOutTime = null,
                         status = "not_checked_in"
                     )
+                    stopWorkingHoursTimer()
+                    _liveWorkingHours.value = null
                 }
         }
     }
@@ -277,6 +301,68 @@ class AttendanceHistoryViewModel @Inject constructor(
         } catch (e: Exception) {
             ""
         }
+    }
+
+    private fun startWorkingHoursTimer(checkInTime: String?) {
+        stopWorkingHoursTimer()
+
+        if (checkInTime.isNullOrBlank()) return
+
+        timerJob = viewModelScope.launch {
+            while (true) {
+                try {
+                    val checkInDate = parseCheckInTime(checkInTime)
+                    val now = Date()
+                    val diffInMillis = now.time - checkInDate.time
+                    val diffInHours = diffInMillis / (1000.0 * 60 * 60)
+                    _liveWorkingHours.value = diffInHours
+                } catch (e: Exception) {
+                    // If parsing fails, stop the timer
+                    break
+                }
+                delay(1000) // Update every second
+            }
+        }
+    }
+
+    private fun stopWorkingHoursTimer() {
+        timerJob?.cancel()
+        timerJob = null
+    }
+
+    private fun parseCheckInTime(timeString: String): Date {
+        return try {
+            val normalized = timeString.trim().replace(' ', 'T')
+            
+            val zonedDateTime = try {
+                DateTimeFormatter.ISO_DATE_TIME.parseBest(
+                    normalized,
+                    ZonedDateTime::from,
+                    OffsetDateTime::from,
+                    LocalDateTime::from
+                )
+            } catch (e: Exception) {
+                null
+            }
+            
+            val convertedDateTime = when (zonedDateTime) {
+                is ZonedDateTime -> zonedDateTime.withZoneSameInstant(ZoneId.systemDefault())
+                is OffsetDateTime -> zonedDateTime.atZoneSameInstant(ZoneId.systemDefault())
+                is LocalDateTime -> zonedDateTime.atZone(ZoneId.systemDefault())
+                else -> null
+            }
+            
+            convertedDateTime?.let {
+                Date.from(it.toInstant())
+            } ?: Date()
+        } catch (e: Exception) {
+            Date()
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopWorkingHoursTimer()
     }
 }
 
