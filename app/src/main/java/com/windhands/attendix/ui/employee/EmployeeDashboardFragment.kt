@@ -3,7 +3,6 @@ package com.windhands.attendix.ui.employee
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -12,15 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.windhands.attendix.R
 import com.windhands.attendix.databinding.FragmentEmployeeDashboardBinding
 import com.windhands.attendix.ui.base.BaseFragment
 import com.windhands.attendix.ui.employee.adapter.LeaveBalanceMiniAdapter
-import com.windhands.attendix.util.gone
 import com.windhands.attendix.util.toDisplayTime
-import com.windhands.attendix.util.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

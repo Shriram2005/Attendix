@@ -53,50 +53,26 @@ class LeaveManagementViewModel @Inject constructor(
                         val data = response.data
                         val balanceItems = mutableListOf<LeaveBalanceItem>()
                         
-                        data?.annual?.let { annual ->
+                        // Use the toBalanceItems() method which handles the backend format
+                        data?.toBalanceItems()?.forEach { dto ->
                             balanceItems.add(
                                 LeaveBalanceItem(
-                                    type = "annual",
-                                    displayName = "Annual Leave",
-                                    used = annual.used,
-                                    total = annual.total,
-                                    remaining = annual.remaining
+                                    type = dto.type,
+                                    displayName = when(dto.type) {
+                                        "paid" -> "Paid Leave"
+                                        "unpaid" -> "Unpaid Leave"
+                                        "annual" -> "Annual Leave"
+                                        "sick" -> "Sick Leave"
+                                        "personal" -> "Personal Leave"
+                                        else -> dto.type.replaceFirstChar { it.uppercase() }
+                                    },
+                                    used = dto.used,
+                                    total = dto.total,
+                                    remaining = dto.remaining
                                 )
                             )
                         }
-                        data?.sick?.let { sick ->
-                            balanceItems.add(
-                                LeaveBalanceItem(
-                                    type = "sick",
-                                    displayName = "Sick Leave",
-                                    used = sick.used,
-                                    total = sick.total,
-                                    remaining = sick.remaining
-                                )
-                            )
-                        }
-                        data?.personal?.let { personal ->
-                            balanceItems.add(
-                                LeaveBalanceItem(
-                                    type = "personal",
-                                    displayName = "Personal Leave",
-                                    used = personal.used,
-                                    total = personal.total,
-                                    remaining = personal.remaining
-                                )
-                            )
-                        }
-                        data?.unpaid?.let { unpaid ->
-                            balanceItems.add(
-                                LeaveBalanceItem(
-                                    type = "unpaid",
-                                    displayName = "Unpaid Leave",
-                                    used = unpaid.used,
-                                    total = unpaid.total,
-                                    remaining = unpaid.remaining
-                                )
-                            )
-                        }
+                        
                         _leaveBalanceState.value = LeaveBalanceState.Success(balanceItems)
                     } else {
                         _leaveBalanceState.value = LeaveBalanceState.Error(response.message ?: "Failed to load leave balance")

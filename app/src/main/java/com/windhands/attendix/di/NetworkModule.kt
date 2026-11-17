@@ -27,7 +27,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "https://attendance-app-jpkbq.ondigitalocean.app/api/"
+    // Base URL is read from BuildConfig.BASE_URL (configured in app/build.gradle.kts)
+    private val BASE_URL = BuildConfig.BASE_URL
     private const val CONNECT_TIMEOUT = 30L
     private const val READ_TIMEOUT = 30L
     private const val WRITE_TIMEOUT = 30L

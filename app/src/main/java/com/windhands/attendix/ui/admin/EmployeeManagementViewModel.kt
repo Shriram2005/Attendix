@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class EmployeeManagementViewModel @Inject constructor(
@@ -42,7 +43,7 @@ class EmployeeManagementViewModel @Inject constructor(
     private fun setupSearchObserver() {
         viewModelScope.launch {
             _searchQuery
-                .debounce(300)
+                .debounce(300.milliseconds)
                 .distinctUntilChanged()
                 .collect {
                     loadEmployees()

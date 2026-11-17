@@ -20,8 +20,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // API Base URL
-        buildConfigField("String", "BASE_URL", "\"https://employee-attendance-system-1y0t.onrender.com/api/\"")
+        // Live Render Backend URL
+        buildConfigField("String", "BASE_URL", "\"https://employee-attendance-system-1-4eja.onrender.com/api/\"")
     }
 
     buildTypes {
