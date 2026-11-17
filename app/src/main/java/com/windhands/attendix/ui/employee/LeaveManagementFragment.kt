@@ -109,9 +109,13 @@ class LeaveManagementFragment : Fragment() {
                             }
                             is LeaveBalanceState.Success -> {
                                 leaveBalanceAdapter.submitList(state.balances)
+                                binding.layoutEmptyLeaveBalance.isVisible = state.balances.isEmpty()
+                                binding.rvLeaveBalance.isVisible = state.balances.isNotEmpty()
                             }
                             is LeaveBalanceState.Error -> {
                                 Log.e(TAG, "LeaveBalanceState Error: ${state.message}")
+                                binding.layoutEmptyLeaveBalance.isVisible = true
+                                binding.rvLeaveBalance.isVisible = false
                                 Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                             }
                         }

@@ -130,16 +130,43 @@ class EmployeeDashboardViewModel @Inject constructor(
                                 stopWorkingHoursTimer()
                                 _liveWorkingHours.value = att.workingHours
                             }
+
+                            // Build recent activities from today's attendance
+                            val activities = mutableListOf<ActivityItem>()
+                            if (att.checkIn != null) {
+                                activities.add(
+                                    ActivityItem(
+                                        title = "Checked In",
+                                        subtitle = "Today at ${att.checkIn}",
+                                        badge = att.status ?: "Present",
+                                        type = ActivityType.CHECK_IN
+                                    )
+                                )
+                            }
+                            if (att.checkOut != null) {
+                                activities.add(
+                                    0,
+                                    ActivityItem(
+                                        title = "Checked Out",
+                                        subtitle = "Today at ${att.checkOut}",
+                                        badge = "${att.workingHours ?: 0.0} hrs",
+                                        type = ActivityType.CHECK_OUT
+                                    )
+                                )
+                            }
+                            _recentActivities.value = activities
                         } ?: run {
                             _todayAttendance.value = null
                             stopWorkingHoursTimer()
                             _liveWorkingHours.value = null
+                            _recentActivities.value = emptyList()
                         }
                     },
                     onFailure = {
                         _todayAttendance.value = null
                         stopWorkingHoursTimer()
                         _liveWorkingHours.value = null
+                        _recentActivities.value = emptyList()
                     }
                 )
 

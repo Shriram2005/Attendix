@@ -37,6 +37,11 @@
     <string name="error_password_short">Password must be at least 8 characters</string>
 
     <!-- Empty States -->
+    <string name="empty_leave_balance">No leave balances available</string>
+    <string name="empty_leave_balance_subtitle">Your leave quota will appear here once allocated by your administrator.</string>
+    <string name="empty_activity_subtitle">Your daily check-in and check-out records will appear here.</string>
+    <string name="empty_attendance_history_subtitle">No attendance recorded for this month.</string>
+    <string name="admin_no_pending_approvals_subtitle">All leave requests have been reviewed.</string>
     <string name="empty_no_data">No data available</string>
     <string name="empty_employees_subtitle">Add employees to get started with attendance management.</string>
     <string name="search_employees_hint">Search by name, ID, or email</string>

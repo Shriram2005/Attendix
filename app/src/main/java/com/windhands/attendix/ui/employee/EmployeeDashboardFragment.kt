@@ -149,6 +149,8 @@ class EmployeeDashboardFragment : BaseFragment<FragmentEmployeeDashboardBinding>
                 launch {
                     viewModel.leaveBalances.collect { balances ->
                         leaveBalanceAdapter.submitList(balances)
+                        binding.layoutEmptyLeaveBalance.isVisible = balances.isEmpty()
+                        binding.rvLeaveBalance.isVisible = balances.isNotEmpty()
                     }
                 }
 

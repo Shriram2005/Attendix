@@ -555,6 +555,7 @@
                     android:layout_height="64dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_history"
+                    android:alpha="0.4"
                     app:tint="?attr/colorOutline" />
 
                 <TextView
@@ -564,6 +565,15 @@
                     android:text="@string/empty_no_attendance"
                     android:textAppearance="@style/TextAppearance.Attendix.BodyMedium"
                     android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/empty_attendance_history_subtitle"
+                    android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                    android:textColor="?attr/colorOutline"
+                    android:gravity="center" />
 
             </LinearLayout>
 

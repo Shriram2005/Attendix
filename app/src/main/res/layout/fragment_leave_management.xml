@@ -58,6 +58,44 @@
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_leave_balance_card" />
 
+            <!-- Empty State for Leave Balances -->
+            <LinearLayout
+                android:id="@+id/layoutEmptyLeaveBalance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/spacing_lg"
+                android:paddingVertical="@dimen/spacing_md"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_calendar"
+                    android:alpha="0.4"
+                    app:tint="?attr/colorOutline"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    android:text="@string/empty_leave_balance"
+                    android:textAppearance="@style/TextAppearance.Attendix.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/empty_leave_balance_subtitle"
+                    android:textAppearance="@style/TextAppearance.Attendix.LabelSmall"
+                    android:textColor="?attr/colorOutline"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
             <!-- Filter Chips -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
